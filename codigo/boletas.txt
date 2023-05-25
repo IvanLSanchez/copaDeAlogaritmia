@@ -1,0 +1,8 @@
+Avenida Siempre Viva;ASV;10
+Meligión;MLN;11
+Ivan Al Cuadrado;IA2;1
+Partido Programadores Principiantes;PPP;2
+ley;ley;24
+hoy;hoy;25
+Ivan Ayala;IAY;23
+gaturro;cat;30

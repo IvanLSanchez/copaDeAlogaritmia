@@ -1,0 +1,9 @@
+Buenos Aires;1
+Córdoba;2
+Santa Fe;3
+Formosa;4
+Chubut;5
+Neuquén;6
+Río Negro;7
+Santa Cruz;8
+Misiones;9

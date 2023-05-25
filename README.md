@@ -7,15 +7,11 @@ es de cuatro años, con la posibilidad de una sola reelección inmediata. Los ca
 Además de elegir presidente y vicepresidente, se renovarán ciento treinta diputados y
 veinticuatro senadores.
 
-## Etapa 1
-[Consignas](etapa1/etapa1.md)\
-[Codigo](etapa1/codigo)
-## Etapa 2
-[Consignas](etapa2/etapa2.md)\
-[Codigo](etapa2/codigo)
-## Etapa 3
-[Consignas](etapa3/etapa3.md)\
-[Codigo](etapa3/codigo)
-## Etapa 4
-[Consignas](etapa4/etapa4.md)\
-[Codigo](etapa4/codigo)
+## Consignas 📄
+- [Etapa 1](consignas/etapa1.md)
+- [Etapa 2](consignas/etapa2.md)
+- [Etapa 3](consignas/etapa3.md)
+- [Etapa 4](consignas/etapa4.md)
+
+## Codigo 💻
+- [Archivos 📁](codigo)
