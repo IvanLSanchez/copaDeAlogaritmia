@@ -8,7 +8,7 @@ El formato de registro será el siguiente:
 > **DNI ; Región ; Cargo ; Partido**
 
 - **DNI:** Número de DNI del votante (valor entero positivo menor a 100000000)
-- **Región:** Código de provincia, obtenido del archivo de regiones geográficas ge-nerado en la Etapa 1.
+- **Región:** Código de provincia, obtenido del archivo de regiones geográficas generado en la Etapa 1.
 - **Cargo:** Código del cargo votado (1, 2, 3 o 4, según tabla más abajo).
 - **Partido:** Abreviatura del partido político votado, obtenida del archivo de partidos políticos generado en la Etapa 1.
 
