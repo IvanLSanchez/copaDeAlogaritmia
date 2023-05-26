@@ -1,5 +1,6 @@
 import random
 from modulos import Archivo
+from modulos import Pantalla
 
 def validarExistenciaClave(dDiccionario, iDato):
   """Valida la existencia de la llave iDato dentro de dDiccionario"""
@@ -8,7 +9,6 @@ def validarExistenciaClave(dDiccionario, iDato):
   if iDato in lClaves:
     bExiste = True
   return bExiste
-
 
 def generarVoto(iRegistros, dVotosRegion, lPartidos, lRegiones):
   """Genera votos aleatorios para el padrón electoral"""
@@ -80,3 +80,7 @@ lVotos = formatearVotos(dVotoPadron)
 #Guardado de los votos del padrón
 sRuta = "archivo_votacion.csv"
 Archivo.guardar(sRuta, lVotos)
+
+#Muestra Resultados por pantalla
+lVotosMemoria = Archivo.leer(sRuta)
+Pantalla.visualizarSimulacion(lRegionMemoria, lVotosMemoria)
