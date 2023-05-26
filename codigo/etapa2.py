@@ -9,8 +9,8 @@ def generarNumeroAleatorio(iMin, iMax):
 def validarExistenciaClave(dDiccionario, iDato):
   bExiste = False
   lClaves = dDiccionario.keys()
-  print(dDiccionario) # line35: validarExistenciaClave(dVotosRegion, iVotoRegion) -> {}
-  print(lClaves) # ine 35: validarExistenciaClave(dVotosRegion, iVotoRegion) -> dict_keys([])
+  print(dDiccionario) # line 35: validarExistenciaClave(dVotosRegion, iVotoRegion) -> {}
+  print(lClaves) # line 35: validarExistenciaClave(dVotosRegion, iVotoRegion) -> dict_keys([])
   if iDato in lClaves:
     bExiste = True
   return bExiste
