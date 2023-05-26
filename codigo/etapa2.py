@@ -13,6 +13,8 @@ def validarExistenciaClave(dDiccionario, iDato):
 def generarVoto(iRegistros, dVotosRegion, lPartidos, lRegiones):
   """Genera votos aleatorios para el padrón electoral"""
   dVotoPadron = {}
+  lRegistroDNI = []
+  lRegionHabiltada = []
   for i in range(iRegistros):
     iVotoDNI = random.randint(1, 99999999)
     #Validación de la existencia del documento
@@ -23,7 +25,7 @@ def generarVoto(iRegistros, dVotosRegion, lPartidos, lRegiones):
     dVotoPadron[iVotoDNI] = []
     iPosicion = random.randint(0, len(lRegiones)-1)
     iVotoRegion = lRegiones[iPosicion][1]
-
+    lRegistroDNI.append(iVotoDNI)
   #{1:[345, 555], 4:[222]}
   #Validación existencia de la región
     if validarExistenciaClave(dVotosRegion, iVotoRegion):
@@ -31,22 +33,24 @@ def generarVoto(iRegistros, dVotosRegion, lPartidos, lRegiones):
     else:
       dVotosRegion[iVotoRegion] = []
       dVotosRegion[iVotoRegion].append(iVotoDNI)
+      lRegionHabiltada.append(iVotoRegion)
 
-    for j in range(4):
-      lVotoDNI = []
-      iVota = random.randint(0, 10)
-      sVotoCargo = str(j+1)
-      if iVota > 1:
-        iPosicion = random.randint(0, len(lPartidos)-1)
-        iVotoPartido = lPartidos[iPosicion][1]
-      else:
-        iVotoPartido = ""
-      lVotoDNI.append(str(iVotoDNI))
-      lVotoDNI.append(str(iVotoRegion))
-      lVotoDNI.append(sVotoCargo)
-      lVotoDNI.append(iVotoPartido)
-      #[555, 1, 2, LBD]
-      dVotoPadron[iVotoDNI].append(lVotoDNI)
+  for iDNI in lRegistroDNI:
+    lVotoDNI = []
+    iVota = random.randint(1, 10)
+    sRegion = str(random.choice(lRegionHabiltada))
+    sVotoCargo = str(random.randint(1, 4))
+    if iVota > 1:
+      iPosicion = random.randint(0, len(lPartidos)-1)
+      iVotoPartido = lPartidos[iPosicion][1]
+    else:
+      iVotoPartido = ""
+    lVotoDNI.append(str(iDNI))
+    lVotoDNI.append(sRegion)
+    lVotoDNI.append(sVotoCargo)
+    lVotoDNI.append(iVotoPartido)
+    #[555, 1, 2, LBD]
+    dVotoPadron[iDNI].append(lVotoDNI)
   return dVotoPadron
 
 def formatearVotos(dVotoPadron):
