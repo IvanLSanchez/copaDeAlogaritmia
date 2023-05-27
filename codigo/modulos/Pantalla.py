@@ -40,8 +40,30 @@ def visualizar(sRuta, lArchivo):
 # https://www.delftstack.com/es/howto/python/data-in-table-format-python/
 # https://www.w3schools.com/python/ref_string_format.asp
 
-def visualizarSimulacion(lRegiones, lArchivo):
-    for i in range (int(lRegiones[-1][-1])):
+def visualizarSimulacion(lRegiones, dArchivo):
+    sListadoSeparador = "_".center(ICANTIDADCARACTERES,'_')
+    print(f"{sListadoSeparador}\n")
+    sListadoTitulo = f"RESULTADOS".center(ICANTIDADCARACTERES)
+    print(f"{sListadoTitulo}")
+    print(f"{sListadoSeparador}\n")
+    print("{:^30} {:^15} {:^15}".format('REGION','% DE VOTOS','CANTIDAD'))
+    print(f"{sListadoSeparador}\n")
+
+    iCantVotosTotales = 0
+    for i in dArchivo:
+        iCantVotosTotales += len(dArchivo[i])
+    
+    lRegionesQueVotaron = list(dArchivo.keys()).sort()
+
+    for region in lRegionesQueVotaron:
+        iPos = lRegiones.index(region)
+        sRegion = lRegiones[iPos][0]
+        iVotosPartido = len(dArchivo[region])
+        print("{:^30} %{:^15} {:^15}".format(sRegion.upper(),((iVotosPartido*100)/iCantVotosTotales),iVotosPartido))
+        print(f"{sListadoSeparador}\n")
+
+
+    """for i in range (int(lRegiones[-1][-1])):
         for j in range (1,5,1):
             dVotosEmitidos = {}
             iCantVotosTotales = 0
@@ -76,4 +98,4 @@ def visualizarSimulacion(lRegiones, lArchivo):
                 for clave in dVotosEmitidos:
                     iVotosPartido = dVotosEmitidos.get(clave)
                     print("{:^35} %{:^35}".format(clave.upper(),((iVotosPartido*100)/iCantVotosTotales)))
-                    print(f"{sListadoSeparador}\n")
+                    print(f"{sListadoSeparador}\n")"""

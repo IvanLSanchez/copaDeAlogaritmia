@@ -1,12 +1,12 @@
-import Diccionario
-import Archivo
+from modulos import Diccionario
+from modulos import Archivo
 import random
     
 def asignarVoto(dPadron, dRegiones):
     sArchBoletas = "boletas.txt"
     lPartidosMemoria = Archivo.leer(sArchBoletas)
-    lPadron = dPadron.keys()
-    lRegiones = dRegiones.keys()
+    lPadron = list(dPadron.keys())
+    lRegiones = list(dRegiones.keys())
     for iDNI in lPadron:
         lVotoDNI = []
         iVota = random.randint(1, 10)
@@ -27,9 +27,7 @@ def asignarVoto(dPadron, dRegiones):
         #[555, 1, 2, LBD]
         dPadron[iDNI].append(lVotoDNI)
         
-def generarRegion(dPadron):
-    sArchRegiones = "regiones.txt"
-    lRegionMemoria = Archivo.leer(sArchRegiones)
+def generarRegion(dPadron, lRegionMemoria):
     iMax = len(lRegionMemoria)-1
     dRegiones = {}
     for iDNI in dPadron:
@@ -56,7 +54,3 @@ def generarPadron(iRegistros):
           bEsInvalido = Diccionario.esClave(dPadron, iVotoDNI)
         dPadron[iVotoDNI] = []
     return dPadron
-
-dPadron = generarPadron(10)
-dRegiones = generarRegion(dPadron)
-asignarVoto(dPadron, dRegiones)
