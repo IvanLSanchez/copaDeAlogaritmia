@@ -16,6 +16,7 @@ def esClave(dDiccionario, clave):
   return bEsClave
 
 def validarValor(dDiccionario, valorClave, valor):
+    """Verificación de la existencia del valor en dDiccionario"""
     bExiste = False
     #Por cada clave del diccionario
     for clave in dDiccionario:

@@ -1,8 +1,9 @@
+import random
 from modulos import Diccionario
 from modulos import Archivo
-import random
-    
+  
 def asignarVoto(dPadron, dRegiones):
+    """Asigna un voto al azar para cada el padrón electoral"""
     sArchBoletas = "boletas.txt"
     lPartidosMemoria = Archivo.leer(sArchBoletas)
     lPadron = list(dPadron.keys())
@@ -28,6 +29,7 @@ def asignarVoto(dPadron, dRegiones):
         dPadron[iDNI].append(lVotoDNI)
         
 def generarRegion(dPadron, lRegionMemoria):
+    """Genera una región al azar de acuerdo a las obtenidas en lRegionMemoria"""
     iMax = len(lRegionMemoria)-1
     dRegiones = {}
     for iDNI in dPadron:
@@ -44,6 +46,7 @@ def generarRegion(dPadron, lRegionMemoria):
     return dRegiones
 
 def generarPadron(iRegistros):
+    """Genera el padrón electoral de acuerdo a la cantidad deseada"""
     dPadron = {}
     for i in range(iRegistros):
         iVotoDNI = random.randint(1, 99999999)

@@ -2,6 +2,7 @@ import random
 from modulos import Archivo
 from modulos import Escrutinio
 from modulos import Diccionario
+from modulos import Pantalla
 
 sEspeciales=" ¡!\"#$%‰&'()*+,-./0-9:;<<=>>?@A-Z[]^_`{}\\"
 sN = input("Ingrese cantidad de registros: ")
@@ -29,3 +30,6 @@ lVotos = Diccionario.cambiarALista(dPadron)
 
 #Guardado de los votos del padrón
 Archivo.guardar(sRuta, lVotos)
+
+#Visualización de los votos
+Pantalla.mostrarVotos(lRegionMemoria, dRegiones)
