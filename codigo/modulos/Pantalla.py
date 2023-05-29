@@ -40,40 +40,28 @@ def visualizar(sRuta, lArchivo):
 # https://www.delftstack.com/es/howto/python/data-in-table-format-python/
 # https://www.w3schools.com/python/ref_string_format.asp
 
-def visualizarSimulacion(lRegiones, lArchivo):
-    for i in range (int(lRegiones[-1][-1])):
-        for j in range (1,5,1):
-            dVotosEmitidos = {}
-            iCantVotosTotales = 0
+def mostrarVotos(lRegiones, dArchivo):
+    """Visualización del recuento de voto en relación a los electores por provincia"""
+    sListadoSeparador = "_".center(ICANTIDADCARACTERES,'_')
+    print(f"{sListadoSeparador}\n")
+    sListadoTitulo = f"RESULTADOS".center(ICANTIDADCARACTERES)
+    print(f"{sListadoTitulo}")
+    print(f"{sListadoSeparador}\n")
+    print("{:^30} {:^15} {:^15}".format('REGION','% DE VOTOS','CANTIDAD'))
+    print(f"{sListadoSeparador}\n")
 
-            for k in lArchivo:
-                if int(k[1]) == int(lRegiones[i][-1]) and int(k[2]) == j and k[3]!="":
-                    if dVotosEmitidos.get(k[3]):
-                        dVotosEmitidos[k[3]] += 1
-                    else:
-                        dVotosEmitidos[k[3]] = 1
-                    iCantVotosTotales += 1
-
-            if len(dVotosEmitidos) > 0:
-                sListadoSeparador = "_".center(ICANTIDADCARACTERES,'_')
-                print(f"{sListadoSeparador}\n")
-
-                if j == 1:
-                    sCargoVotado = "PRESIDENTE Y VICEPRESIDENTE"
-                elif j == 2:
-                    sCargoVotado = "DIPUTADOS"
-                elif j == 3:
-                    sCargoVotado = "SENADOR"
-                else:
-                    sCargoVotado = "GOBERNADOR Y VICEGOBERNADOR"
-                
-                sListadoTitulo = f"RESULTADOS ({lRegiones[i][0].upper()}) - {sCargoVotado}".center(ICANTIDADCARACTERES)
-                print(f"{sListadoTitulo}")
-                print(f"{sListadoSeparador}\n")
-                print("{:^35} {:^35}".format('PARTIDO','% DE VOTOS'))
-                print(f"{sListadoSeparador}\n")
-
-                for clave in dVotosEmitidos:
-                    iVotosPartido = dVotosEmitidos.get(clave)
-                    print("{:^35} %{:^35}".format(clave.upper(),((iVotosPartido*100)/iCantVotosTotales)))
-                    print(f"{sListadoSeparador}\n")
+    iCantVotosTotales = 0
+    for clave in dArchivo:
+        iCantVotosTotales += len(dArchivo[clave])
+    
+    lVotoRegion = list(dArchivo.keys())
+    lVotoRegion.sort()
+    
+    for sVotoRegion in lVotoRegion:
+        for lDatos in lRegiones:
+            if lDatos[1] == sVotoRegion:
+                sRegion = lDatos[0]
+        iVotosPartido = len(dArchivo[sVotoRegion])
+        fPorcentaje = ((iVotosPartido*100)/iCantVotosTotales)
+        print("{:^30} %{:^15.2f} {:^15}".format(sRegion.upper(), fPorcentaje, iVotosPartido))
+        print(f"{sListadoSeparador}\n")

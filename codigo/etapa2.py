@@ -1,86 +1,38 @@
-import random
 from modulos import Archivo
+from modulos import Escrutinio
+from modulos import Diccionario
 from modulos import Pantalla
 
-def validarExistenciaClave(dDiccionario, iDato):
-  """Valida la existencia de la llave iDato dentro de dDiccionario"""
-  bExiste = False
-  lClaves = dDiccionario.keys()
-  if iDato in lClaves:
-    bExiste = True
-  return bExiste
+sEspeciales=" ¡!\"#$%‰&'()*+,-./0-9:;<<=>>?@A-Z[]^_`{}\\"
 
-def generarVoto(iRegistros, dVotosRegion, lPartidos, lRegiones):
-  """Genera votos aleatorios para el padrón electoral"""
-  dVotoPadron = {}
-  lRegistroDNI = []
-  lRegionHabiltada = []
-  for i in range(iRegistros):
-    iVotoDNI = random.randint(1, 99999999)
-    #Validación de la existencia del documento
-    bEsInvalido = validarExistenciaClave(dVotoPadron, iVotoDNI)
-    while bEsInvalido:
-      iVotoDNI = random.randint(1, 99999999)
-      bEsInvalido = validarExistenciaClave(dVotoPadron, iVotoDNI)
-    dVotoPadron[iVotoDNI] = []
-    iPosicion = random.randint(0, len(lRegiones)-1)
-    iVotoRegion = lRegiones[iPosicion][1]
-    lRegistroDNI.append(iVotoDNI)
-  #{1:[345, 555], 4:[222]}
-  #Validación existencia de la región
-    if validarExistenciaClave(dVotosRegion, iVotoRegion):
-      dVotosRegion[iVotoRegion].append(iVotoDNI)
-    else:
-      dVotosRegion[iVotoRegion] = []
-      dVotosRegion[iVotoRegion].append(iVotoDNI)
-      lRegionHabiltada.append(iVotoRegion)
+try:
+    sN = input("Ingrese cantidad de registros: ")
+    while sN=="" or sN.isalpha() or not sN.isdigit() or int(sN)<=0:
+        print("Valor NO válido\n")
+        sN = input("Ingrese cantidad de registros: ")
+except ValueError:
+        print("Valor NO válido\n")
+        sN = input("Ingrese cantidad de registros: ")
 
-  for iDNI in lRegistroDNI:
-    lVotoDNI = []
-    iVota = random.randint(1, 10)
-    sRegion = str(random.choice(lRegionHabiltada))
-    sVotoCargo = str(random.randint(1, 4))
-    if iVota > 1:
-      iPosicion = random.randint(0, len(lPartidos)-1)
-      iVotoPartido = lPartidos[iPosicion][1]
-    else:
-      iVotoPartido = ""
-    lVotoDNI.append(str(iDNI))
-    lVotoDNI.append(sRegion)
-    lVotoDNI.append(sVotoCargo)
-    lVotoDNI.append(iVotoPartido)
-    #[555, 1, 2, LBD]
-    dVotoPadron[iDNI].append(lVotoDNI)
-  return dVotoPadron
+iRegistros = int(sN)
 
-def formatearVotos(dVotoPadron):
-  """Devuelve una lista de votos"""
-  lVotos = []
-  for clave in dVotoPadron:
-      lDatos = dVotoPadron[clave]
-      for linea in lDatos:
-          lVotos.append(linea)
-  return lVotos        
-    
+sRuta = "archivo_votacion.csv"
+sRegiones = "regiones.txt"
 
-# Guarda nombre de los archivos y genera listas
-sArchBoletas = "boletas.txt"
-sArchRegiones = "regiones.txt"
+lRegionMemoria = Archivo.leer(sRegiones)
 
-lPartidosMemoria = Archivo.leer(sArchBoletas)
-lRegionMemoria = Archivo.leer(sArchRegiones)
+dPadron = Escrutinio.generarPadron(iRegistros, lRegionMemoria)
 
-dVotoRegion = {}
-iRegistros = int(input("Ingrese cantidad de registros: "))
+dRegiones = Escrutinio.generarRegion(dPadron, lRegionMemoria)
 
-#Obtención de votos por padrón
-dVotoPadron = generarVoto(iRegistros, dVotoRegion, lPartidosMemoria, lRegionMemoria)
-lVotos = formatearVotos(dVotoPadron)
+Escrutinio.asignarCargo(dPadron)
+
+Escrutinio.asignarVoto(dPadron)
+
+lVotos = Diccionario.cambiarALista(dPadron)
 
 #Guardado de los votos del padrón
-sRuta = "archivo_votacion.csv"
 Archivo.guardar(sRuta, lVotos)
 
-#Muestra Resultados por pantalla
-lVotosMemoria = Archivo.leer(sRuta)
-Pantalla.visualizarSimulacion(lRegionMemoria, lVotosMemoria)
+#Visualización de los votos
+Pantalla.mostrarVotos(lRegionMemoria, dRegiones)
