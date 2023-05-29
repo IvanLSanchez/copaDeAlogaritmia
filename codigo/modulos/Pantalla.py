@@ -63,5 +63,5 @@ def mostrarVotos(lRegiones, dArchivo):
                 sRegion = lDatos[0]
         iVotosPartido = len(dArchivo[sVotoRegion])
         fPorcentaje = ((iVotosPartido*100)/iCantVotosTotales)
-        print("{:^30} %{:^15} {:^15}".format(sRegion.upper(), fPorcentaje, iVotosPartido))
+        print("{:^30} %{:^15.2f} {:^15}".format(sRegion.upper(), fPorcentaje, iVotosPartido))
         print(f"{sListadoSeparador}\n")
