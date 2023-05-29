@@ -21,7 +21,7 @@ A partir de los archivos generados en la ETAPA 1 y 2, realizar un programa en Py
 
 Cada opción de menú deberá asimismo mostrar por pantalla un informe con el siguiente formato y ordenado de mayor a menor según el total de votos:
 
-![formato de salida]()
+![formato de salida](imagenes/Captura(1).PNG)
 
 ### b.Generación de archivos: 
 Por cada región y tipo de cargo se deberá generar un archivo de texto llamado <REGION>_<CARGO>.csv (por ejemplo MENDOZA_GOBERNADOR.csv o SALTA_PRESIDENTE.csv) con el resumen del resultado según el siguiente diseño de registro:
