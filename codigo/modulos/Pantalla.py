@@ -98,6 +98,17 @@ def menuEscrutinio():
             print("Valor NO válido\n")
             sOpcion=input(sIngreso)
     print()
+    #VOTOS POSIBLES:
+    #1-Presidente y vicepresidente
+    #2-Diputados
+    #3-Senadores
+    #4-Consulta de resultados Gobernador y Vicegobernador
+    if sOpcion == "2":
+        #Esta opcion es la opción 4 de votos posibles
+        sOpcion = "4"
+    elif sOpcion == "4":
+        #Esta opcion es la opción 2 de votos posibles
+        sOpcion = "2"
     
     return sOpcion
 
