@@ -91,3 +91,43 @@ def contarVotosRegion(dVotosRegion):
         tTotales=(iVotoPositivo, fPorcentajePositivo, iVotoBlanco, fPorcentajeBlanco, iTotalRegion, fPorcentajeTotal)
         dDiccionario[clave].append(tTotales)
     return dDiccionario
+
+def contarVotosPartido(dVotosRegion):
+    dRegionPartido = {}
+    for clave in dVotosRegion:
+        dVotoPartido = {}
+        lVotos = []
+        iTotalRegion = 0
+        #lVoto es en formato DNI,REGION,CARGO,PARTIDO
+        for lVoto in dVotosRegion[clave]:
+            #En posición 3 vienen los partidos políticos
+            sClave = lVoto[3]
+            iTotalRegion+=1
+            if not Diccionario.esClave(dVotoPartido, sClave):
+                dVotoPartido[sClave] = []
+                #Hay un voto
+                dVotoPartido[sClave].append(1)           
+            else:
+                #Se suma el voto
+                dVotoPartido[sClave][0]+=1
+        #Agregado del total y el porcentaje    
+        for partido in dVotoPartido:
+            iVotoPartido = dVotoPartido[partido][0]
+            dVotoPartido[partido].append(iTotalRegion)
+            iPorcentaje = (iVotoPartido * 100) / iTotalRegion
+            dVotoPartido[partido].append(iPorcentaje)
+        #Árbol: cada región tiene una rama de partidos
+        dVotoPartido = ordenarPorIndex(dVotoPartido)
+        dRegionPartido[clave] = dVotoPartido
+    return dRegionPartido
+
+def ordenarPorIndex(dDiccionario):
+    #Lista de tuplas en formato clave, valor
+    lLista = list(dDiccionario.items())
+    #Ordena los items de manera ascendente
+    lLista.sort(key=lambda x:x[1][0], reverse=True)
+    #Ordena los items de manera descendente
+    #Se transforma en diccionario
+    dNuevo = dict(lLista)
+    return dNuevo
+    
