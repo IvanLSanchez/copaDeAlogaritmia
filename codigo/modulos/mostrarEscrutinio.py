@@ -9,23 +9,27 @@ def mostrarEscrutinio(cantPartidos):
     sColor5 = "\33[4m" #Subrayado
     sColor6 = "\33[0;m" #Color Base
 
-    ## sEnter = sColor2.center(ICANTIDADCARACTERESENTER) + sColor6
+    sEnter = sColor3 + " ".center(ICANTIDADCARACTERES," ") + sColor6
     sSeparador = sColor3 + "_".center(ICANTIDADCARACTERES,"_") + sColor6
     
     print(sColor1 + "<REGION>".center(ICANTIDADCARACTERES) + sColor6)
 
     print(sColor2 + "ELECCIONES GENERALES 2023".center(ICANTIDADCARACTERES) + sColor6)
     print(sColor2 + "Categoria: <CARGO>".center(ICANTIDADCARACTERES) + sColor6)
+    
+    print(sEnter)
 
     print(sColor2 + "Electores habilitados: <CANTIDAD_DE_ELECTORES_EN_LA_REGION>".center(ICANTIDADCARACTERES) + sColor6)
     print(sColor2 + "Porcentaje de votantes: <PORCENTAJE>".center(ICANTIDADCARACTERES) + sColor6)
 
     print(sSeparador)
+    print(sEnter)
 
     print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("N° LISTA", "PARTIDO POLITICO", "VOTO", "%") + sColor6)
     print(sSeparador)
 
     for i in range (cantPartidos):
+        print(sEnter)
         print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format(f"<NRO_LISTA_{i+1}>", f"PARTIDO_{i+1}:", "<CANT_VOTOS>", "<PORCENTAJE>") + sColor6)
         print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)
         print(sSeparador)
