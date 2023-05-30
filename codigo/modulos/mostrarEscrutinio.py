@@ -10,12 +10,12 @@ def mostrarEscrutinio(cantPartidos):
     sColor6 = "\33[0m"
 
     sEnter = sColor2.center(ICANTIDADCARACTERESENTER) + sColor6
-    sSeparador = sColor3 + "_".center(ICANTIDADCARACTERES,"_") + sColor6
+    sSeparador = sColor3 + "_".center(ICANTIDADCARACTERES,"_")
     
     print(sColor1 + "<REGION>".center(ICANTIDADCARACTERES) + sColor6)
 
     print(sColor2 + "ELECCIONES GENERALES 2023".center(ICANTIDADCARACTERES) + sColor6)
-    print(sColor2 + "Categoria: <CARGO>".center(ICANTIDADCARACTERES) + sColor6)
+    print(sColor2 + "Categoria: <CARGO>".center(ICANTIDADCARACTERES))
 
     print(sEnter)
 
