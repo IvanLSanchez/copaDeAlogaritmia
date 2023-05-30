@@ -3,7 +3,7 @@ def leer(sDirectorio):
     lDatos = [] #guarda datos de linea
     lRegistro = [] #guarda listas
     try: 
-        oArchivo = open(f"../codigo/baseDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
+        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
         sLinea = oArchivo.readline()
         while sLinea:
             sListado = sLinea.rstrip("\n")
@@ -23,7 +23,7 @@ def leer(sDirectorio):
 def guardar(sDirectorio, lRegistro):
     """Guarda los valores de la lista lRegistro en el archivo sDirectorio"""
     try:
-        oArchivo = open(f"codigo/baseDeDatos/{sDirectorio}", "at")
+        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "at")
         for datos in lRegistro:
             sLinea = ";".join(datos)
             sLinea = sLinea + "\n"
@@ -42,7 +42,7 @@ def leerVotos(sDirectorio, sCargo):
     lVoto = [] #guarda datos de linea
     lVotos = [] #guarda listas
     try: 
-        oArchivo = open(f"codigo/baseDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
+        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
         
         for sLinea in oArchivo:
             sDatos = sLinea.rstrip("\n")
