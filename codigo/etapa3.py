@@ -14,8 +14,10 @@ dRegionPartido= Escrutinio.contarVotosPartido(dVotosRegiones)
 
 dRegistroElectoral = Escrutinio.archivar(dRegionPartido, lOpcion[1])
 
-print(dRegistroElectoral)
+##print(dVotosTotales)
+##print(dRegistroElectoral)
 
 Archivo.guardarEleccion(dRegistroElectoral)
 
-Pantalla.mostrarEscrutinio(dRegistroElectoral, dVotosRegiones, dVotosTotales)
+print("\n"*2)
+Pantalla.mostrarEscrutinio(dRegistroElectoral, dVotosTotales, lOpcion[1])
