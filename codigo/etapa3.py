@@ -10,10 +10,12 @@ lVotos = Archivo.leerVotos(sRuta, lOpcion[0])
 
 dVotosRegiones=Escrutinio.generarVotoRegion(lVotos)
 dVotosTotales=Escrutinio.contarVotosRegion(dVotosRegiones)
-dRegionPartido = Escrutinio.contarVotosPartido(dVotosRegiones)
+dRegionPartido= Escrutinio.contarVotosPartido(dVotosRegiones)
 
 dRegistroElectoral = Escrutinio.archivar(dRegionPartido, lOpcion[1])
 
+print(dRegistroElectoral)
+
 Archivo.guardarEleccion(dRegistroElectoral)
 
-
+Pantalla.mostrarEscrutinio(dRegistroElectoral, dVotosRegiones, dVotosTotales)

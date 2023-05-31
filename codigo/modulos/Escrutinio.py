@@ -45,7 +45,7 @@ def generarRegion(dPadron, lRegionMemoria):
           dRegiones[iVotoRegion].append(str(iDNI))
     return dRegiones
 
-def generarPadron(iRegistros):
+def generarPadron(iRegistros, lRegionMemoria):
     """Genera el padrón electoral de acuerdo a la cantidad deseada"""
     dPadron = {}
     for i in range(iRegistros):
@@ -167,4 +167,3 @@ def archivar(dRegionPartido, sCargo):
             else:
                 dVotosTotales[sNombreArchivo].append(lVotosRegion)
     return dVotosTotales
-
