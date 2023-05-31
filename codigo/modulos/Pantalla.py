@@ -1,3 +1,5 @@
+from modulos import Escrutinio
+
 ICANTIDADCARACTERES=70
 ICANTIDADCARACTERESENTER = 100
 
@@ -121,46 +123,65 @@ def menuEscrutinio():
     
     return lOpcion
 
-def mostrarEscrutinio(dRegiones, dTotales, sCargo):
-    sColor1 = "\33[1;37;41m" #Fondo Rojo con letra blanca negrita
-    sColor2 = "\33[1;30;47m" #Fondo Blanco con letra 
-    sColor3 = "\33[0;30;47m" #Fondo Blanco con letra normal
-    sColor4 = "\33[1m" #Negrita
-    sColor5 = "\33[4m" #Subrayado
-    sColor6 = "\33[0;m" #Color Base
-    sEnter = sColor3 + " ".center(ICANTIDADCARACTERES," ") + sColor6
-    sSeparador = sColor3 + "_".center(ICANTIDADCARACTERES,"_") + sColor6
-    
-    for region in dRegiones:
-        lRegion = region.split("_")
-        sCodRegio = str(dRegiones[region][0][0])
+# archivo para el modelado del cuadro de salida de la etapa 3. No presenta relevancia en la funcionalidad del codigo principal
+ICANTIDADCARACTERES = 90
+ICANTIDADCARACTERESENTER = 100
 
-        print(sColor1 + f"{lRegion[0]}".center(ICANTIDADCARACTERES), sColor6)
-        
-        print(sColor2 + "ELECCIONES GENERALES 2023".center(ICANTIDADCARACTERES), sColor6)
-        print(sColor2 + f"Categoria: {sCargo}".center(ICANTIDADCARACTERES), sColor6)
-        
+
+
+def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
+    
+    dRegiones, dPartidos = Escrutinio.obtenerRegionesPartidos()
+    for clave in dRegionPartido:
+        sNomRegion=dRegiones[clave][0].upper()
+        iVotoPositivo=dVotosTotales[clave][0][0]
+        fPorcentajePositivo=dVotosTotales[clave][0][1]
+        iVotoBlanco=dVotosTotales[clave][0][2]
+        fPorcentajeBlanco=dVotosTotales[clave][0][3]
+        iTotalRegion=dVotosTotales[clave][0][4]
+        fPorcentajeTotal=dVotosTotales[clave][0][5]
+        sColor1 = "\33[1;37;41m"
+        sColor2 = "\33[1;30;47m"
+        sColor3 = "\33[0;30;47m"
+        sColor4 = "\33[1m"
+        sColor5 = "\33[4m"
+        sColor6 = "\33[0m"
+
+        sEnter = sColor3 + " ".center(ICANTIDADCARACTERES," ") + sColor6
+        sSeparador = sColor3 + "_".center(ICANTIDADCARACTERES,"_") + sColor6
+    
+        print(sColor1 + sNomRegion.center(ICANTIDADCARACTERES) + sColor6)
+
+        print(sColor2 + "ELECCIONES GENERALES 2023".center(ICANTIDADCARACTERES) + sColor6)
+        print(sColor2 + ("Categoria: " + sCargo ).center(ICANTIDADCARACTERES) + sColor6)
+
         print(sEnter)
-        
-        print(sColor2 + f"Electores habilitados: {len(dRegiones[region])}".center(ICANTIDADCARACTERES) + sColor6)
-        print(sColor2 + f"Porcentaje de votantes: {dTotales[sCodRegio][0][1]}%".center(ICANTIDADCARACTERES) + sColor6)
-        
+
+        print(sColor2 + ("Electores habilitados: {}".format(iTotalRegion)).center(ICANTIDADCARACTERES) + sColor6)
+        print(sColor2 + ("Porcentaje de votantes: {}".format(fPorcentajeTotal)).center(ICANTIDADCARACTERES) + sColor6)
+
         print(sSeparador)
         print(sEnter)
-        
-        print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("N° LISTA", "PARTIDO POLITICO", "VOTO", "%") + sColor6)
-        
+
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
         print(sSeparador)
+
+        for partido in dRegionPartido[clave]:
+            if partido!="":
+                sNomPartido = partido + ":"
+                sNroLista = dPartidos[partido][1]
+            else:
+                sNomPartido = "Voto en Blanco"
+                sNroLista = ""
+            iTotalPartido=dRegionPartido[clave][partido][0]
+            fPorcentajePartido=dRegionPartido[clave][partido][2]
+            print(sEnter)
+            print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f}".format(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido) + sColor6)
+            if sNroLista!="":
+                print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)                
+            print(sSeparador)
         
-        for candidato in dRegiones[region]:
-            if candidato[1] != "":
-                print(sEnter)
-                print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format(f"{candidato[1]}", f"PARTIDO:", f"{candidato[2]}", f"{candidato[3]}") + sColor6)
-                print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)
-                print(sSeparador)
-            
-        print(sColor3 + "{:>48} {}|{:^21}|{:^21}|".format(sColor4 + "VOTOS POSITIVOS:", sColor5,f"{dTotales[sCodRegio][0][0]}", f"{dTotales[sCodRegio][0][1]}%" ) + sColor6)
-        print(sColor3 + "{:>48} {}|{:^21}|{:^21}|".format(sColor4 + "VOTOS EN BLANCO:", sColor5,f"{dTotales[sCodRegio][0][2]}", f"{dTotales[sCodRegio][0][3]}%" ) + sColor6)
-        print(sColor3 + "{:>48} {}|{:^21}|{:^21}|".format(sColor4 + "TOTAL:", sColor5,f"{dTotales[sCodRegio][0][4]}", f"{dTotales[sCodRegio][0][5]}%" ) + sColor6)
-        
-        print(sColor6 + "\n"*2)
+        print(sColor3 + "{:>48} {}|{:^21}|{:^21.2f}|".format(sColor4 + "VOTOS POSITIVOS:", sColor5, iVotoPositivo, fPorcentajePositivo) + sColor6)
+        print(sColor3 + "{:>48} {}|{:^21}|{:^21.2f}|".format(sColor4 + "VOTOS EN BLANCO:", sColor5, iVotoBlanco, fPorcentajeBlanco) + sColor6)
+        print(sColor3 + "{:>48} {}|{:^21}|{:^21.2f}|".format(sColor4 + "TOTAL:", sColor5, iTotalRegion, fPorcentajeTotal) + sColor6)
+        print()

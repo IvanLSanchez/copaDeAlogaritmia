@@ -160,13 +160,8 @@ def ordenarPorIndex(dDiccionario):
     return dNuevo
     
 def archivar(dRegionPartido, sCargo):
-    sRuta = "boletas.txt"
-    lPartidos = Archivo.leer(sRuta)
-    dPartidos = Diccionario.generarDiccionario(lPartidos)
-
-    sRuta = "regiones.txt"
-    lRegiones = Archivo.leer(sRuta)
-    dRegiones = Diccionario.generarDiccionario(lRegiones)
+   
+    dRegiones, dPartidos = obtenerRegionesPartidos()
     
     dVotosTotales = {}
     for sCodRegion in dRegionPartido:
@@ -195,3 +190,15 @@ def archivar(dRegionPartido, sCargo):
             else:
                 dVotosTotales[sNombreArchivo].append(lVotosRegion)
     return dVotosTotales
+
+def obtenerRegionesPartidos():
+    
+    sRuta = "boletas.txt"
+    lPartidos = Archivo.leer(sRuta)
+    dPartidos = Diccionario.generarDiccionario(lPartidos)
+
+    sRuta = "regiones.txt"
+    lRegiones = Archivo.leer(sRuta)
+    dRegiones = Diccionario.generarDiccionario(lRegiones)
+    
+    return dRegiones, dPartidos
