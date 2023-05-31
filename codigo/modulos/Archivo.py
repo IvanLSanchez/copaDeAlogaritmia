@@ -58,8 +58,7 @@ def leerVotos(sDirectorio, sCargo):
             pass
         finally:
             return lVotos
-
-        
+      
 def guardarEleccion(dRegistroElectoral):
     """Guarda el registro electoral en el archivo que tiene por nombre la clave de dRegistroElectoral"""
     try:
