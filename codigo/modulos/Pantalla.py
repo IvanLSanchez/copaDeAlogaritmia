@@ -116,8 +116,9 @@ def menuEscrutinio():
         sOpcion = "2"
         sCargo = "DIPUTADOS"
 
+    lOpcion = [sOpcion, sCargo]
     
-    return sOpcion,sCargo
+    return lOpcion
 
 def mostrarEscrutinio():
     pass
