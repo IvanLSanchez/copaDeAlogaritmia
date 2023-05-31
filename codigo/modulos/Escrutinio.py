@@ -96,7 +96,7 @@ def contarVotosPartido(dVotosRegion):
     dRegionPartido = {}
     for clave in dVotosRegion:
         dVotoPartido = {}
-        lVotos = []
+        lVoto = []
         iTotalRegion = 0
         #lVoto es en formato DNI,REGION,CARGO,PARTIDO
         for lVoto in dVotosRegion[clave]:
@@ -131,3 +131,40 @@ def ordenarPorIndex(dDiccionario):
     dNuevo = dict(lLista)
     return dNuevo
     
+def archivar(dRegionPartido, sCargo):
+    sRuta = "boletas.txt"
+    lPartidos = Archivo.leer(sRuta)
+    dPartidos = Diccionario.generarDiccionario(lPartidos)
+
+    sRuta = "regiones.txt"
+    lRegiones = Archivo.leer(sRuta)
+    dRegiones = Diccionario.generarDiccionario(lRegiones)
+    
+    dVotosTotales = {}
+    for sCodRegion in dRegionPartido:
+        for sPartido in dRegionPartido[sCodRegion]:
+            lVotosRegion = []
+            lCantVotos = dRegionPartido[sCodRegion][sPartido]
+            sNomRegion = dRegiones.get(sCodRegion, [])[0].upper()
+            sSinEspacio = sNomRegion.split()
+            sNomRegion = "".join(sSinEspacio)
+            lPartido = dPartidos.get(sPartido, "")
+            if lPartido != "":
+                sNumLista = lPartido[1].upper()
+            else:
+                sNumLista = ""
+            
+            sTotalObtenido = str(lCantVotos[0])
+            sPorcentaje = "{:.2f}%".format(lCantVotos[2])
+            sNombreArchivo = sNomRegion+ "_" + sCargo + ".csv"
+            lVotosRegion.append(sCodRegion)
+            lVotosRegion.append(sNumLista)
+            lVotosRegion.append(sTotalObtenido)
+            lVotosRegion.append(sPorcentaje)
+            if not Diccionario.esClave(dVotosTotales, sNombreArchivo):
+                dVotosTotales[sNombreArchivo] = []
+                dVotosTotales[sNombreArchivo].append(lVotosRegion)
+            else:
+                dVotosTotales[sNombreArchivo].append(lVotosRegion)
+    return dVotosTotales
+

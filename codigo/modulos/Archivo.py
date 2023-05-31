@@ -58,3 +58,23 @@ def leerVotos(sDirectorio, sCargo):
             pass
         finally:
             return lVotos
+
+        
+def guardarEleccion(dRegistroElectoral):
+    """Guarda el registro electoral en el archivo que tiene por nombre la clave de dRegistroElectoral"""
+    try:
+        for sNomArchivo in dRegistroElectoral:
+            lRegistro = dRegistroElectoral[sNomArchivo]
+            oArchivo = open(f"codigo/basesDeDatos/{sNomArchivo}", "wt", encoding="UTF-8")
+            
+            for lDato in lRegistro:
+                sLinea = ";".join(lDato)
+                sLinea = sLinea + "\n"
+                oArchivo.write(sLinea)
+    except OSError as mensaje:
+        pass
+    finally:
+        try:
+            oArchivo.close()
+        except NameError:
+            pass
