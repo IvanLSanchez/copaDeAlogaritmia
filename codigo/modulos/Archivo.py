@@ -3,7 +3,7 @@ def leer(sDirectorio):
     lDatos = [] #guarda datos de linea
     lRegistro = [] #guarda listas
     try: 
-        oArchivo = open(f"codigo/{sDirectorio}", "rt", encoding="UTF-8")
+        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
         sLinea = oArchivo.readline()
         while sLinea:
             sListado = sLinea.rstrip("\n")
@@ -23,7 +23,7 @@ def leer(sDirectorio):
 def guardar(sDirectorio, lRegistro):
     """Guarda los valores de la lista lRegistro en el archivo sDirectorio"""
     try:
-        oArchivo = open(f"codigo/{sDirectorio}", "at")
+        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "at")
         for datos in lRegistro:
             sLinea = ";".join(datos)
             sLinea = sLinea + "\n"
@@ -35,4 +35,45 @@ def guardar(sDirectorio, lRegistro):
             oArchivo.close()
         except NameError:
             pass
- 
+        
+def leerVotos(sDirectorio, sCargo):
+    """Devuelve en una la lista de votos encontrados
+    de acuerdo a sCargo en el archivo sDirectorio"""
+    lVoto = [] #guarda datos de linea
+    lVotos = [] #guarda listas
+    try: 
+        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
+        
+        for sLinea in oArchivo:
+            sDatos = sLinea.rstrip("\n")
+            lVoto = sDatos.split(";")
+            if lVoto[2] == sCargo:
+                lVotos.append(lVoto)
+    except OSError as mensaje:
+        pass
+    finally:
+        try:
+            oArchivo.close()
+        except NameError:
+            pass
+        finally:
+            return lVotos
+      
+def guardarEleccion(dRegistroElectoral):
+    """Guarda el registro electoral en el archivo que tiene por nombre la clave de dRegistroElectoral"""
+    try:
+        for sNomArchivo in dRegistroElectoral:
+            lRegistro = dRegistroElectoral[sNomArchivo]
+            oArchivo = open(f"codigo/basesDeDatos/{sNomArchivo}", "wt", encoding="UTF-8")
+            
+            for lDato in lRegistro:
+                sLinea = ";".join(lDato)
+                sLinea = sLinea + "\n"
+                oArchivo.write(sLinea)
+    except OSError as mensaje:
+        pass
+    finally:
+        try:
+            oArchivo.close()
+        except NameError:
+            pass
