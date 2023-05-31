@@ -91,7 +91,7 @@ def menuEscrutinio():
 
     try:
         sOpcion=input(sIngreso)
-        while sOpcion=="" or sOpcion.isalpha() or not sOpcion.isdigit() or int(sOpcion)<=0:
+        while sOpcion=="" or sOpcion.isalpha() or not sOpcion.isdigit() or int(sOpcion) > 4:
             print("Valor NO válido\n")
             sOpcion=input(sIngreso)
     except ValueError:
