@@ -127,11 +127,71 @@ def menuEscrutinio():
 ICANTIDADCARACTERES = 90
 ICANTIDADCARACTERESENTER = 100
 
+def mostrarSenadores(dSenadores, dVotosTotales):
+    
+    dRegiones, dPartidos = Escrutinio.obtenerRegionesPartidos()
 
+    sNomRegion="nacional".upper()
+    iVotoPositivo="XXX"
+    fPorcentajePositivo="XXX"
+    iVotoBlanco="XXX"
+    fPorcentajeBlanco="XXX"
+    iTotalRegion="XXX"
+    fPorcentajeTotal="XXX"
+    # iVotoPositivo=dVotosTotales[clave][0][0]
+    # fPorcentajePositivo=dVotosTotales[clave][0][1]
+    # iVotoBlanco=dVotosTotales[clave][0][2]
+    # fPorcentajeBlanco=dVotosTotales[clave][0][3]
+    # iTotalRegion=dVotosTotales[clave][0][4]
+    # fPorcentajeTotal=dVotosTotales[clave][0][5]
+
+    sColor1 = "\33[1;37;41m"
+    sColor2 = "\33[1;30;47m"
+    sColor3 = "\33[0;30;47m"
+    sColor4 = "\33[1m"
+    sColor5 = "\33[4m"
+    sColor6 = "\33[0m"
+
+    sEnter = sColor3 + " ".center(ICANTIDADCARACTERES," ") + sColor6
+    sSeparador = sColor3 + "_".center(ICANTIDADCARACTERES,"_") + sColor6
+
+    print(sColor1 + sNomRegion.center(ICANTIDADCARACTERES) + sColor6)
+
+    print(sColor2 + "ELECCIONES GENERALES 2023".center(ICANTIDADCARACTERES) + sColor6)
+    print(sColor2 + ("Categoria: Senadores").center(ICANTIDADCARACTERES) + sColor6)
+
+    print(sEnter)
+
+    print(sColor2 + ("Electores habilitados: {}".format(iTotalRegion)).center(ICANTIDADCARACTERES) + sColor6)
+    print(sColor2 + ("Porcentaje de votantes: {}".format(fPorcentajeTotal)).center(ICANTIDADCARACTERES) + sColor6)
+
+    print(sSeparador)
+    print(sEnter)
+
+    print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
+    print(sSeparador)
+
+    for partido in dSenadores:
+        if partido!="":
+            sNomPartido = partido + ":"
+            sNroLista = dPartidos[partido][1]
+            iTotalPartido=dSenadores[partido][0]
+            fPorcentajePartido=dSenadores[partido][2]
+            print(sEnter)
+            print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f}".format(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido) + sColor6)
+            if sNroLista!="":
+                print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)                
+            print(sSeparador)
+    
+    print(sColor3 + "{:>48} {}|{:^21}|{:^21}|".format(sColor4 + "VOTOS POSITIVOS:", sColor5, iVotoPositivo, fPorcentajePositivo) + sColor6)
+    print(sColor3 + "{:>48} {}|{:^21}|{:^21}|".format(sColor4 + "VOTOS EN BLANCO:", sColor5, iVotoBlanco, fPorcentajeBlanco) + sColor6)
+    print(sColor3 + "{:>48} {}|{:^21}|{:^21}|".format(sColor4 + "TOTAL:", sColor5, iTotalRegion, fPorcentajeTotal) + sColor6)
+    print()
 
 def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
     
     dRegiones, dPartidos = Escrutinio.obtenerRegionesPartidos()
+    
     for clave in dRegionPartido:
         sNomRegion=dRegiones[clave][0].upper()
         iVotoPositivo=dVotosTotales[clave][0][0]
@@ -170,16 +230,13 @@ def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
             if partido!="":
                 sNomPartido = partido + ":"
                 sNroLista = dPartidos[partido][1]
-            else:
-                sNomPartido = "Voto en Blanco"
-                sNroLista = ""
-            iTotalPartido=dRegionPartido[clave][partido][0]
-            fPorcentajePartido=dRegionPartido[clave][partido][2]
-            print(sEnter)
-            print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f}".format(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido) + sColor6)
-            if sNroLista!="":
-                print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)                
-            print(sSeparador)
+                iTotalPartido=dRegionPartido[clave][partido][0]
+                fPorcentajePartido=dRegionPartido[clave][partido][2]
+                print(sEnter)
+                print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f}".format(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido) + sColor6)
+                if sNroLista!="":
+                    print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)                
+                print(sSeparador)
         
         print(sColor3 + "{:>48} {}|{:^21}|{:^21.2f}|".format(sColor4 + "VOTOS POSITIVOS:", sColor5, iVotoPositivo, fPorcentajePositivo) + sColor6)
         print(sColor3 + "{:>48} {}|{:^21}|{:^21.2f}|".format(sColor4 + "VOTOS EN BLANCO:", sColor5, iVotoBlanco, fPorcentajeBlanco) + sColor6)

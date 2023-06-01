@@ -202,3 +202,35 @@ def obtenerRegionesPartidos():
     dRegiones = Diccionario.generarDiccionario(lRegiones)
     
     return dRegiones, dPartidos
+
+def obtenerTotalSenadores(dRegionPartido):
+    
+    iTotalVotos = 0
+    dSenadores = {}
+    for region in dRegionPartido:
+       
+        dVotosPartido = dRegionPartido[region]
+       
+        for partido in dVotosPartido:
+            
+            if Diccionario.esClave(dSenadores, partido):
+                #Posición 0 está la cantidad de voto por partido
+                dSenadores[partido][0] += dVotosPartido[partido][0]
+            else:
+                dSenadores[partido] = [0]
+                iTotalVotos += dVotosPartido[partido][1]                
+    
+    for partido in dSenadores:
+        iVotos = dSenadores[partido][0]
+        fPorcentaje = (iVotos * 100) / iTotalVotos
+        dSenadores[partido].append(iTotalVotos)
+        dSenadores[partido].append(fPorcentaje)
+    
+    dSenadores = ordenarPorIndex(dSenadores)
+    return dSenadores
+            
+            
+            
+            
+            
+    
