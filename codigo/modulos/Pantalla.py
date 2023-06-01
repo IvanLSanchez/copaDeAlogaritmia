@@ -218,6 +218,8 @@ def mostrarSenadores(dSenadores):
 def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
     """Visualización del escrutinio electoral"""
     
+    print(dRegionPartido)
+    print(dVotosTotales)
     iRelleno = 90
     
     sColor1 = "\33[1;37;41m"
@@ -231,36 +233,39 @@ def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
     dPartidos = Escrutinio.obtenerPartido()
     
     for clave in dRegionPartido:
-        sNomRegion=dRegiones[clave][0]
         
-        iVotoPositivo=dVotosTotales[clave][0][0]
-        fPorcentajePositivo=dVotosTotales[clave][0][1]
-        iVotoBlanco=dVotosTotales[clave][0][2]
-        fPorcentajeBlanco=dVotosTotales[clave][0][3]
-        iTotalRegion=dVotosTotales[clave][0][4]
-        fPorcentajeTotal=dVotosTotales[clave][0][5]
+        if '' in dRegionPartido[clave]:
+            iTotal = len(dRegionPartido[clave])-1
+        else:
+            iTotal = len(dRegionPartido[clave])
         
-        sTitulo = sNomRegion
-        sCategoria = sCargo
-        iTotal = iTotalRegion
-        iPorcentaje = fPorcentajeTotal
-        
-        mostrarEstructura(sTitulo, sCategoria, iTotal, iPorcentaje)
+        if iTotal != 0:
+            iVotoPositivo=dVotosTotales[clave][0][0]
+            fPorcentajePositivo=dVotosTotales[clave][0][1]
+            iVotoBlanco=dVotosTotales[clave][0][2]
+            fPorcentajeBlanco=dVotosTotales[clave][0][3]
+            iTotalRegion=dVotosTotales[clave][0][4]
+            fPorcentajeTotal=dVotosTotales[clave][0][5]
+            sNomRegion=dRegiones[clave][0]
+            sTitulo = sNomRegion
+            sCategoria = sCargo
+            iPorcentaje = fPorcentajeTotal
+            mostrarEstructura(sTitulo, sCategoria, iTotal, iPorcentaje)
 
-        for partido in dRegionPartido[clave]:
-            if partido!="":
-                sNomPartido = partido + ":"
-                sNroLista = dPartidos[partido][1]
-                iTotalPartido=dRegionPartido[clave][partido][0]
-                fPorcentajePartido=dRegionPartido[clave][partido][2]
-                mostrarDatosGrilla(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido)
-                
-        sVotosPositivos = "VOTOS POSITIVOS:"
-        mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
-        
-        sVotoBlancos = "VOTOS EN BLANCO:"
-        mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+            for partido in dRegionPartido[clave]:
+                if partido!="":
+                    sNomPartido = partido + ":"
+                    sNroLista = dPartidos[partido][1]
+                    iTotalPartido=dRegionPartido[clave][partido][0]
+                    fPorcentajePartido=dRegionPartido[clave][partido][2]
+                    mostrarDatosGrilla(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido)
+                    
+            sVotosPositivos = "VOTOS POSITIVOS:"
+            mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
+            
+            sVotoBlancos = "VOTOS EN BLANCO:"
+            mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
 
-        sTotales = "TOTAL:"
-        mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
-        print()
+            sTotales = "TOTAL:"
+            mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
+            print()
