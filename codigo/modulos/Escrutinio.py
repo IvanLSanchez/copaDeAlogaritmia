@@ -117,12 +117,14 @@ def contarVotosRegion(dVotosRegion):
                 iVotoPositivo+=1
         fPorcentajePositivo=(iVotoPositivo*100)/iTotalRegion
         fPorcentajeBlanco=(iVotoBlanco*100)/iTotalRegion
-        fPorcentajeTotal=100
+        fPorcentajeTotal=100.0
         tTotales=(iVotoPositivo, fPorcentajePositivo, iVotoBlanco, fPorcentajeBlanco, iTotalRegion, fPorcentajeTotal)
         dDiccionario[clave].append(tTotales)
     return dDiccionario
 
 def contarVotosPartido(dVotosRegion):
+    """Devuelve un árbol donde la clave es la región y el valor es un diccionario con los votos
+    obtenidos por cada partido"""
     dRegionPartido = {}
     for clave in dVotosRegion:
         dVotoPartido = {}
@@ -146,22 +148,29 @@ def contarVotosPartido(dVotosRegion):
             iPorcentaje = (iVotoPartido * 100) / iTotalRegion
             dVotoPartido[partido].append(iPorcentaje)
         #Árbol: cada región tiene una rama de partidos
-        dVotoPartido = ordenarPorIndex(dVotoPartido)
+        dVotoPartido = Diccionario.ordenarDiccionarioMatriz(dVotoPartido)
         dRegionPartido[clave] = dVotoPartido
     return dRegionPartido
 
-def ordenarPorIndex(dDiccionario):
-    #Lista de tuplas en formato clave, valor
-    lLista = list(dDiccionario.items())
-    #Ordena los items de manera descendente
-    lLista.sort(key=lambda x:x[1][0], reverse=True)
-    #Se transforma en diccionario
-    dNuevo = dict(lLista)
-    return dNuevo
-    
+def obtenerPartido():
+    """Devuelve un diccionario de los partidos con la abreviatura como clave"""
+    sRuta = "boletas.txt"
+    lPartidos = Archivo.leer(sRuta)
+    dPartidos = Diccionario.generarDiccionario(lPartidos)
+    return dPartidos
+
+def obtenerRegion():
+    """Devuelve un diccionario de las regones con código de región como clave"""
+    sRuta = "regiones.txt"
+    lRegiones = Archivo.leer(sRuta)
+    dRegiones = Diccionario.generarDiccionario(lRegiones)
+    return dRegiones
+
 def archivar(dRegionPartido, sCargo):
-   
-    dRegiones, dPartidos = obtenerRegionesPartidos()
+    """Devuelve un diccionario con el nombre de la provincia como ruta de archivo
+    y su valor contiene una lista con código región, número de lista, votos obtenidos y el porcentaje total"""
+    dRegiones = obtenerRegion()
+    dPartidos = obtenerPartido()
     
     dVotosTotales = {}
     for sCodRegion in dRegionPartido:
@@ -191,46 +200,49 @@ def archivar(dRegionPartido, sCargo):
                 dVotosTotales[sNombreArchivo].append(lVotosRegion)
     return dVotosTotales
 
-def obtenerRegionesPartidos():
-    
-    sRuta = "boletas.txt"
-    lPartidos = Archivo.leer(sRuta)
-    dPartidos = Diccionario.generarDiccionario(lPartidos)
-
-    sRuta = "regiones.txt"
-    lRegiones = Archivo.leer(sRuta)
-    dRegiones = Diccionario.generarDiccionario(lRegiones)
-    
-    return dRegiones, dPartidos
-
-def obtenerTotalSenadores(dRegionPartido):
-    
+def obtenerSenadores(dRegionPartido):
+    """Devuelve un diccionario con el escrutinio nacional por cada partido en el cargo senador"""
     iTotalVotos = 0
     dSenadores = {}
     for region in dRegionPartido:
-       
         dVotosPartido = dRegionPartido[region]
-       
         for partido in dVotosPartido:
-            
+            iTotalVotos += dVotosPartido[partido][0]
             if Diccionario.esClave(dSenadores, partido):
                 #Posición 0 está la cantidad de voto por partido
                 dSenadores[partido][0] += dVotosPartido[partido][0]
             else:
-                dSenadores[partido] = [0]
-                iTotalVotos += dVotosPartido[partido][1]                
-    
+                #Se agrega lista con valor 0 en su primera posición
+                dSenadores[partido] = [dVotosPartido[partido][0]]
+            
     for partido in dSenadores:
         iVotos = dSenadores[partido][0]
         fPorcentaje = (iVotos * 100) / iTotalVotos
         dSenadores[partido].append(iTotalVotos)
         dSenadores[partido].append(fPorcentaje)
     
-    dSenadores = ordenarPorIndex(dSenadores)
+    dSenadores = Diccionario.ordenarDiccionarioMatriz(dSenadores)
     return dSenadores
-            
-            
-            
-            
-            
-    
+
+def calcularTotalesSenadores(dSenadores):
+    """Cálculo de votos totales positivos, en blanco y porcentajes de los senadores a nivel nacional"""
+    iVotoPositivo=0
+    fPorcentajePositivo=0
+    lClaveBlanca=dSenadores.get("")
+    if lClaveBlanca!=None:
+        iVotoBlanco=lClaveBlanca[0]
+        fPorcentajeBlanco=lClaveBlanca[2]
+    sClave=list(dSenadores.keys())[0]
+    iTotalNacional=dSenadores[sClave][1]
+    fPorcentajeTotal=100.0
+    lPartido=[]
+    for clave in dSenadores:
+        if clave!="":
+            iVotoPositivo+=dSenadores[clave][0]
+            fPorcentajePositivo+=dSenadores[clave][2]
+            lClave=[clave]
+            lPartido.append(lClave + dSenadores[clave])
+    tTotales=(iVotoPositivo, fPorcentajePositivo, iVotoBlanco, fPorcentajeBlanco, iTotalNacional, fPorcentajeTotal)
+    lVotos = lPartido[0:2]
+    lVotos.append(tTotales)
+    return lVotos

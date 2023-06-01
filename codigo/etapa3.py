@@ -8,7 +8,6 @@ sRuta = "archivo_votacion.csv"
 lVotos = Archivo.leerVotos(sRuta, sOpcion)
 
 dVotosRegiones=Escrutinio.generarVotoRegion(lVotos)
-dVotosTotales=Escrutinio.contarVotosRegion(dVotosRegiones)
 dRegionPartido = Escrutinio.contarVotosPartido(dVotosRegiones)
 
 dRegistroElectoral = Escrutinio.archivar(dRegionPartido, sCargo)
@@ -16,7 +15,8 @@ dRegistroElectoral = Escrutinio.archivar(dRegionPartido, sCargo)
 Archivo.guardarEleccion(dRegistroElectoral)
 
 if sOpcion !=  '3':
+    dVotosTotales=Escrutinio.contarVotosRegion(dVotosRegiones)
     Pantalla.mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo)
 else:
-    dSenadores = Escrutinio.obtenerTotalSenadores(dRegionPartido)
-    Pantalla.mostrarSenadores(dSenadores, dVotosTotales)
+    dSenadores = Escrutinio.obtenerSenadores(dRegionPartido)
+    Pantalla.mostrarSenadores(dSenadores)

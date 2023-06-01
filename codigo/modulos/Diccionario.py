@@ -43,3 +43,15 @@ def generarDiccionario(lLista):
         if iLongitud > 2:
             dDiccionario[clave].append(lDatos[iPosValor2])
     return dDiccionario
+
+def ordenarDiccionarioMatriz(dDiccionario):
+    """Ordena diccionarios con matrices internas,
+    tomando la posición 1 de las filas y su contenido de posición 0 como referencia de ordenamiento"""
+    #Lista de tuplas en formato clave, valor
+    #[(<clave1>, [<v1.1>, <v1.2>, etc]), (<clave2>, [<v2.1>, <v2.2>, etc])]
+    lLista = list(dDiccionario.items())
+    #Ordena los items de manera descendente
+    lLista.sort(key=lambda x:x[1][0], reverse=True)
+    #Se transforma en diccionario
+    dNuevo = dict(lLista)
+    return dNuevo
