@@ -131,8 +131,11 @@ def mostrarPieGrilla(sTexto, iValor, fPorcentaje):
     sColor6 = "\33[0m"
     print(sColor3 + "{:>48} {}|{:^21}|{:^21.2f}|".format(sColor4 + sTexto, sColor5, iValor, fPorcentaje) + sColor6)
     
-def mostrarDatosGrilla(sNroLista, sNomPartido, iValor, fPorcentaje):
-    """Visualización de los valores del detalle de la grilla"""
+def mostrarDatosGrilla(lGrilla):
+    """Visualización de los valores del detalle de la grilla
+    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido]
+    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido, lNumeroDeBancas[iPosicion]]
+    """
     sColor2 = "\33[1;30;47m"
     sColor3 = "\33[0;30;47m"
     sColor6 = "\33[0m"
@@ -141,11 +144,14 @@ def mostrarDatosGrilla(sNroLista, sNomPartido, iValor, fPorcentaje):
     sEnter = sColor3 + " ".center(iRelleno," ") + sColor6
     sSeparador = sColor3 + "_".center(iRelleno,"_") + sColor6
     print(sEnter)
-    print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f}".format(sNroLista, sNomPartido, iValor, fPorcentaje) + sColor6)
-    print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("", "<CANDIDATOS>", "", "") + sColor6)                
+    try:
+        iCantBancas = lGrilla[4]
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f} {:^20}".format(lGrilla[0], lGrilla[1], lGrilla[2], lGrilla[3], iCantBancas) + sColor6)
+    except:
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f}".format(lGrilla[0], lGrilla[1], lGrilla[2], lGrilla[3]) + sColor6)              
     print(sSeparador)
         
-def mostrarEstructura(sTitulo, sCategoria, iTotal, iPorcentaje):
+def mostrarEstructura(lEstructura):
     """Visualización de la estructura cabecera y detalle de la grilla"""
     iRelleno = 90
     
@@ -157,63 +163,78 @@ def mostrarEstructura(sTitulo, sCategoria, iTotal, iPorcentaje):
     sEnter = sColor3 + " ".center(iRelleno," ") + sColor6
     sSeparador = sColor3 + "_".center(iRelleno,"_") + sColor6
 
-    print(sColor1 + sTitulo.center(iRelleno) + sColor6)
+    print(sColor1 + lEstructura[0].center(iRelleno) + sColor6)
 
     print(sColor2 + "ELECCIONES GENERALES 2023".center(iRelleno) + sColor6)
-    print(sColor2 + ("Categoria: " + sCategoria).center(iRelleno) + sColor6)
+    print(sColor2 + ("Categoria: " + lEstructura[1]).center(iRelleno) + sColor6)
 
     print(sEnter)
 
-    print(sColor2 + ("Electores habilitados: {}".format(iTotal)).center(iRelleno) + sColor6)
-    print(sColor2 + ("Porcentaje de votantes: {}".format(iPorcentaje)).center(iRelleno) + sColor6)
+    print(sColor2 + ("Electores habilitados: {}".format(lEstructura[2])).center(iRelleno) + sColor6)
+    print(sColor2 + ("Porcentaje de votantes: {}".format(lEstructura[3])).center(iRelleno) + sColor6)
 
     print(sSeparador)
     print(sEnter)
 
-    print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
-    print(sSeparador)
+    try:
+        bListaQueLlevaBancas = lEstructura[4]
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20} {:^20}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%", "BANCAS") + sColor6)
+        print(sSeparador)
+    except:
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
+        print(sSeparador)
     
 def mostrarSenadores(dSenadores):
     """Visualización de los senadores"""
+    if '' in dSenadores:
+        iTotal = len(dSenadores)-1
+    else:
+        iTotal = len(dSenadores)
     
-    
-    lVotos=Escrutinio.calcularTotalesSenadores(dSenadores)
-    iVotoPositivo=lVotos[2][0]
-    fPorcentajePositivo=lVotos[2][1]
-    iVotoBlanco=lVotos[2][2]
-    fPorcentajeBlanco=lVotos[2][3]
-    iTotalNacional=lVotos[2][4]
-    fPorcentajeTotal=lVotos[2][5]
+    if iTotal != 0:
+        lVotos=Escrutinio.calcularTotalesSenadores(dSenadores)
+        iVotoPositivo=lVotos[2][0]
+        fPorcentajePositivo=lVotos[2][1]
+        iVotoBlanco=lVotos[2][2]
+        fPorcentajeBlanco=lVotos[2][3]
+        iTotalNacional=lVotos[2][4]
+        fPorcentajeTotal=lVotos[2][5]
 
-    dPartidos = Escrutinio.obtenerPartido()
+        dPartidos = Escrutinio.obtenerPartido()
 
-    sColor1 = "\33[1;37;41m"
-    sColor2 = "\33[1;30;47m"
-    sColor3 = "\33[0;30;47m"
-    sColor6 = "\33[0m"
-    sTitulo = "NACIONAL"
-    sCategoria = "SENADORES"
-    iTotal = iTotalNacional
-    iPorcentaje = fPorcentajeTotal
-    
-    mostrarEstructura(sTitulo, sCategoria, iTotal, iPorcentaje)
+        sColor1 = "\33[1;37;41m"
+        sColor2 = "\33[1;30;47m"
+        sColor3 = "\33[0;30;47m"
+        sColor6 = "\33[0m"
+        sTitulo = "NACIONAL"
+        sCategoria = "SENADORES"
+        
+        iPorcentaje = fPorcentajeTotal
+        
+        lEstructura = [sTitulo, sCategoria, iTotal, iPorcentaje, True]
+        mostrarEstructura(lEstructura)
 
-    for iPosicion in range (2):
-        sNomPartido = lVotos[iPosicion][0]
-        sNroLista = dPartidos[sNomPartido][1]
-        iTotalPartido=lVotos[iPosicion][1]
-        fPorcentajePartido=lVotos[iPosicion][3]
-        mostrarDatosGrilla(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido)
-    
-    sVotosPositivos = "VOTOS POSITIVOS:"
-    mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
-    
-    sVotoBlancos = "VOTOS EN BLANCO:"
-    mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+        lNumeroDeBancas = [16, 8]
 
-    sTotales = "TOTAL:"
-    mostrarPieGrilla(sTotales, iTotalNacional, fPorcentajeTotal)
-    print()
+        for iPosicion in range (2):
+            sNomPartido = lVotos[iPosicion][0]
+            sNroLista = dPartidos[sNomPartido][1]
+            iTotalPartido=lVotos[iPosicion][1]
+            fPorcentajePartido=lVotos[iPosicion][3]
+            lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido, lNumeroDeBancas[iPosicion]]
+            mostrarDatosGrilla(lGrilla)
+        
+        sVotosPositivos = "VOTOS POSITIVOS:"
+        mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
+        
+        sVotoBlancos = "VOTOS EN BLANCO:"
+        mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+
+        sTotales = "TOTAL:"
+        mostrarPieGrilla(sTotales, iTotalNacional, fPorcentajeTotal)
+        print()
+    else:
+        print("No hubo votos en las elecciones de Senadores")
 
 def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
     """Visualización del escrutinio electoral"""
@@ -250,7 +271,9 @@ def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
             sTitulo = sNomRegion
             sCategoria = sCargo
             iPorcentaje = fPorcentajeTotal
-            mostrarEstructura(sTitulo, sCategoria, iTotal, iPorcentaje)
+
+            lEstructura = [sTitulo, sCategoria, iTotal, iPorcentaje]
+            mostrarEstructura(lEstructura)
 
             for partido in dRegionPartido[clave]:
                 if partido!="":
@@ -258,7 +281,8 @@ def mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo):
                     sNroLista = dPartidos[partido][1]
                     iTotalPartido=dRegionPartido[clave][partido][0]
                     fPorcentajePartido=dRegionPartido[clave][partido][2]
-                    mostrarDatosGrilla(sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido)
+                    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido]
+                    mostrarDatosGrilla(lGrilla)
                     
             sVotosPositivos = "VOTOS POSITIVOS:"
             mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
