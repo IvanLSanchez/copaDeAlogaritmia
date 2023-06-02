@@ -14,9 +14,12 @@ dRegistroElectoral = Escrutinio.archivar(dRegionPartido, sCargo)
 
 Archivo.guardarEleccion(dRegistroElectoral)
 
-if sOpcion !=  '3':
-    dVotosTotales=Escrutinio.contarVotosRegion(dVotosRegiones)
-    Pantalla.mostrarEscrutinio(dRegionPartido, dVotosTotales, sCargo)
-else:
+if sOpcion ==  '3':
     dSenadores = Escrutinio.obtenerSenadores(dRegionPartido)
     Pantalla.mostrarSenadores(dSenadores)
+elif sOpcion == '2':
+    dVotosTotales=Escrutinio.contarVotosRegion(dVotosRegiones)
+    Pantalla.mostrarDiputados(dRegionPartido, dVotosTotales, sCargo)
+else:    
+    dVotosTotales=Escrutinio.contarVotosRegion(dVotosRegiones)
+    Pantalla.mostrarPresidentesGobernadores(dRegionPartido, dVotosTotales, sCargo)
