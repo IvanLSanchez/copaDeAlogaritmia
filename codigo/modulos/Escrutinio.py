@@ -1,7 +1,5 @@
-#from modulos 
-import Diccionario
-#from modulos 
-import Archivo
+from modulos import Diccionario
+from modulos import Archivo
 import random
 
 def asignarVoto(dPadron):
@@ -251,10 +249,12 @@ def calcularTotalesSenadores(dSenadores):
     return lVotos
 
 def sistemaDhondt(dPartidos, iCantBancas):
+
     dBancas = {}
     
     dPartidosCopia=dPartidos.copy()
     lBancasTotales = list(dBancas.values())
+
     for partido in dPartidosCopia: 
         dBancas[partido]=0
 
@@ -275,7 +275,8 @@ def sistemaDhondt(dPartidos, iCantBancas):
         dPartidosCopia[sPartido]=dPartidos[sPartido][0]/(iBanca+1)
         lBancasTotales = list(dBancas.values())
 
-    return dBancas,dPartidosCopia
-dPartido = {'POI': [9, 30, 30.0], 'LBD': [9, 30, 30.0], 'FDT': [5, 30, 16.666666666666668], 'PPP': [4, 30, 13.333333333333334], 'JXC': [3, 30, 10.0]}
-dBancas = sistemaDhondt(dPartido, 6)
-print(dBancas)
+    for partido in dPartidos:
+        dPartidos[partido].append(dBancas[partido])
+        
+    dBancas = dPartidos
+    return dBancas

@@ -334,7 +334,20 @@ def mostrarDiputados (dRegionPartido, dVotosTotales, sCargo):
             elif sNomRegion == "Catamarca" or sNomRegion == "La Pampa" or sNomRegion == "Neuquén" or sNomRegion == "Santa Cruz" or sNomRegion == "San Luis":
                 iNumBancas = iNumBancasCatamarcaLaPampaNeuquenSantacruzSanLuis
             
+            if '' in dRegionPartido[clave]:
+                del dRegionPartido[clave]['']
+            
             dBancasDiputados = Escrutinio.sistemaDhondt(dRegionPartido[clave], iNumBancas)
+
+            for partido in dBancasDiputados:
+                if dBancasDiputados[partido][3] != 0:
+                    sNomPartido = partido + ":"
+                    sNroLista = dPartidos[partido][1]
+                    iTotalPartido=dBancasDiputados[partido][0]
+                    fPorcentajePartido=dBancasDiputados[partido][2]
+                    bancasGanadas = dBancasDiputados[partido][3]
+                    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido, bancasGanadas]
+                    mostrarDatosGrilla(lGrilla)
 
             sVotosPositivos = "VOTOS POSITIVOS:"
             mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
