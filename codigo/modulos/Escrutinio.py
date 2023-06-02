@@ -272,7 +272,7 @@ def sistemaDhondt(dPartidos, iCantBancas):
         else:
             dBancas[sPartido]=1
         
-        dPartidosCopia[sPartido]=dPartidos[sPartido][0]/(iBanca+1)
+        dPartidosCopia[sPartido]=dPartidos[sPartido][0]/(dBancas[sPartido]+1)
         lBancasTotales = list(dBancas.values())
 
     for partido in dPartidos:

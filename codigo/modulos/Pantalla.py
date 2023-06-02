@@ -334,7 +334,7 @@ def mostrarDiputados (dRegionPartido, dVotosTotales, sCargo):
                 iNumBancas = iNumBancasCatamarcaLaPampaNeuquenSantacruzSanLuis
             
             if '' in dRegionPartido[clave]:
-                del dRegionPartido[clave]['']
+                dRegionPartido[clave].pop('')
             
             dBancasDiputados = Escrutinio.sistemaDhondt(dRegionPartido[clave], iNumBancas)
 
