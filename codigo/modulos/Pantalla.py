@@ -1,4 +1,7 @@
+from modulos import Escrutinio
+
 ICANTIDADCARACTERES=70
+ICANTIDADCARACTERESENTER = 100
 
 def imprimirPartidos(lArchivo, sListadoSeparador):
     """Muestra en pantalla los partidos políticos de la lista lArchivo"""
@@ -32,13 +35,6 @@ def visualizar(sRuta, lArchivo):
         imprimirPartidos(lArchivo, sListadoSeparador)
     else:
         imprimirRegiones(lArchivo, sListadoSeparador)  
-# 1) genera base del listado
-# 2) abre el archivo
-# 3) segun el archivo genera los campos de la tabla
-# 4) devuelve listados por pantalla
-# https://parzibyte.me/blog/2020/11/09/leer-archivo-csv-python/
-# https://www.delftstack.com/es/howto/python/data-in-table-format-python/
-# https://www.w3schools.com/python/ref_string_format.asp
 
 def mostrarVotos(lRegiones, dArchivo):
     """Visualización del recuento de voto en relación a los electores por provincia"""
@@ -65,3 +61,299 @@ def mostrarVotos(lRegiones, dArchivo):
         fPorcentaje = ((iVotosPartido*100)/iCantVotosTotales)
         print("{:^30} %{:^15.2f} {:^15}".format(sRegion.upper(), fPorcentaje, iVotosPartido))
         print(f"{sListadoSeparador}\n")
+
+def menuEscrutinio():
+    #MENÚ
+    #VISUALIZAR:
+    #1-Consulta de resultados Presidente y vicepresidente
+    #2-Consulta de resultados Gobernador y Vicegobernador
+    #3-Consulta de resultados Senadores
+    #4-Consulta de resultados Diputados
+    sTitulo = "ARGENTINA VOTA - 40 AÑOS DE DEMOCRACIA".center(77,' ')
+            
+    sListadoSeparador = "_".center(77,'_')
+    print(f"{sListadoSeparador}\n")
+    print(f"{sTitulo}")
+    print(f"{sListadoSeparador}\n")
+
+    sBienvenida = "Bienvenido al Portal de Resultados de las Elecciones Generales 2023".center(77, ' ')
+    print(f"{sBienvenida}")
+    print(f"{sListadoSeparador}\n")
+
+    print("A continuación se presentan las opciones para visualización del escrutinio: ")
+
+    print(f"{sListadoSeparador}\n")
+    print("1-Consulta de resultados Presidente y vicepresidente")
+    print("2-Consulta de resultados Gobernador y Vicegobernador")
+    print("3-Consulta de resultados Senadores")
+    print("4-Consulta de resultados Diputados")
+    print(f"{sListadoSeparador}\n")
+
+    sIngreso = "Ingrese el número de la opción elegida y luego presione 'Enter': "
+    print(f"{sListadoSeparador}\n")
+
+    try:
+        sOpcion=input(sIngreso)
+        while sOpcion=="" or sOpcion.isalpha() or not sOpcion.isdigit() or int(sOpcion) > 4 or int(sOpcion) < 1:
+            print("Valor NO válido\n")
+            sOpcion=input(sIngreso)
+    except ValueError:
+            print("Valor NO válido\n")
+            sOpcion=input(sIngreso)
+    print()
+    #VOTOS POSIBLES:
+    #1-Presidente y vicepresidente
+    #2-Diputados
+    #3-Senadores
+    #4-Consulta de resultados Gobernador y Vicegobernador
+    if sOpcion == "1":
+        sCargo = "PRESIDENTE"
+    elif sOpcion == "2":
+        #Esta opcion es la opción 4 de votos posibles
+        sOpcion = "4"
+        sCargo = "GOBERNADOR"
+    elif sOpcion == "3":
+        sCargo = "SENADORES"
+    elif sOpcion == "4":
+        #Esta opcion es la opción 2 de votos posibles
+        sOpcion = "2"
+        sCargo = "DIPUTADOS"
+
+    lOpcion = [sOpcion, sCargo]
+    
+    return lOpcion
+
+def mostrarPieGrilla(sTexto, iValor, fPorcentaje):
+    """Visualización de los totales en el pie de la grilla"""
+    sColor3 = "\33[0;30;47m"
+    sColor4 = "\33[1m"
+    sColor5 = "\33[4m"
+    sColor6 = "\33[0m"
+    print(sColor3 + "{:>69} {}|{:^21}|{:^21.2f}|".format(sColor4 + sTexto, sColor5, iValor, fPorcentaje) + sColor6)
+    
+def mostrarDatosGrilla(lGrilla):
+    """Visualización de los valores del detalle de la grilla"""
+    sColor2 = "\33[1;30;47m"
+    sColor3 = "\33[0;30;47m"
+    sColor6 = "\33[0m"
+
+    iRelleno = 111
+    sEnter = sColor3 + " ".center(iRelleno," ") + sColor6
+    sSeparador = sColor3 + "_".center(iRelleno,"_") + sColor6
+    print(sEnter)
+    try:
+        iCantBancas = lGrilla[4]
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20.2f} {:^20}".format(lGrilla[0], lGrilla[1], lGrilla[2], lGrilla[3], iCantBancas) + sColor6)
+    except:
+        print(sColor2 + "{:^26} {:^32} {:^25} {:^25.2f}".format(lGrilla[0], lGrilla[1], lGrilla[2], lGrilla[3]) + sColor6)              
+    print(sSeparador)
+        
+def mostrarEstructura(lEstructura):
+    """Visualización de la estructura cabecera y detalle de la grilla"""
+    iRelleno = 111
+    
+    sColor1 = "\33[1;37;41m"
+    sColor2 = "\33[1;30;47m"
+    sColor3 = "\33[0;30;47m"
+    sColor6 = "\33[0m"
+
+    sEnter = sColor3 + " ".center(iRelleno," ") + sColor6
+    sSeparador = sColor3 + "_".center(iRelleno,"_") + sColor6
+
+    print(sColor1 + lEstructura[0].center(iRelleno) + sColor6)
+
+    print(sColor2 + "ELECCIONES GENERALES 2023".center(iRelleno) + sColor6)
+    print(sColor2 + ("Categoria: " + lEstructura[1]).center(iRelleno) + sColor6)
+
+    print(sEnter)
+
+    print(sColor2 + ("Electores habilitados: {}".format(lEstructura[2])).center(iRelleno) + sColor6)
+    print(sColor2 + ("Porcentaje de votantes: {}".format(lEstructura[3])).center(iRelleno) + sColor6)
+
+    print(sSeparador)
+    print(sEnter)
+
+    try:
+        bListaQueLlevaBancas = lEstructura[4]
+        print(sColor2 + "{:^20} {:^27} {:^20} {:^20} {:^20}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%", "BANCAS") + sColor6)
+        print(sSeparador)
+    except:
+        print(sColor2 + "{:^26} {:^32} {:^25} {:^25}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
+        print(sSeparador)
+    
+def mostrarSenadores(dSenadores):
+    """Visualización de los senadores"""
+    if '' in dSenadores:
+        iTotal = len(dSenadores)-1
+    else:
+        iTotal = len(dSenadores)
+    
+    if iTotal != 0:
+        lVotos=Escrutinio.calcularTotalesSenadores(dSenadores)
+        iVotoPositivo=lVotos[2][0]
+        fPorcentajePositivo=lVotos[2][1]
+        iVotoBlanco=lVotos[2][2]
+        fPorcentajeBlanco=lVotos[2][3]
+        iTotalNacional=lVotos[2][4]
+        fPorcentajeTotal=lVotos[2][5]
+
+        dPartidos = Escrutinio.obtenerPartido()
+        '''
+        sColor1 = "\33[1;37;41m"
+        sColor2 = "\33[1;30;47m"
+        sColor3 = "\33[0;30;47m"
+        sColor6 = "\33[0m"'''
+        sTitulo = "NACIONAL"
+        sCategoria = "SENADORES"
+        
+        iPorcentaje = fPorcentajeTotal
+        
+        lEstructura = [sTitulo, sCategoria, iTotal, iPorcentaje, True]
+        mostrarEstructura(lEstructura)
+
+        lNumeroDeBancas = [16, 8]
+
+        for iPosicion in range (2):
+            sNomPartido = lVotos[iPosicion][0]
+            sNroLista = dPartidos[sNomPartido][1]
+            iTotalPartido=lVotos[iPosicion][1]
+            fPorcentajePartido=lVotos[iPosicion][3]
+            lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido, lNumeroDeBancas[iPosicion]]
+            mostrarDatosGrilla(lGrilla)
+        
+        sVotosPositivos = "VOTOS POSITIVOS:"
+        mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
+        
+        sVotoBlancos = "VOTOS EN BLANCO:"
+        mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+
+        sTotales = "TOTAL:"
+        mostrarPieGrilla(sTotales, iTotalNacional, fPorcentajeTotal)
+        print()
+    else:
+        print("No hubo votos en las elecciones de Senadores")
+
+def mostrarPresidentesGobernadores(dRegionPartido, dVotosTotales, sCargo):
+    """Visualización del escrutinio electoral"""
+        
+    dRegiones = Escrutinio.obtenerRegion()
+    dPartidos = Escrutinio.obtenerPartido()
+    
+    for clave in dRegionPartido:
+        
+        if '' in dRegionPartido[clave]:
+            iTotal = len(dRegionPartido[clave])-1
+        else:
+            iTotal = len(dRegionPartido[clave])
+        
+        if iTotal != 0:
+            iVotoPositivo=dVotosTotales[clave][0][0]
+            fPorcentajePositivo=dVotosTotales[clave][0][1]
+            iVotoBlanco=dVotosTotales[clave][0][2]
+            fPorcentajeBlanco=dVotosTotales[clave][0][3]
+            iTotalRegion=dVotosTotales[clave][0][4]
+            fPorcentajeTotal=dVotosTotales[clave][0][5]
+            sNomRegion=dRegiones[clave][0]
+            sTitulo = sNomRegion
+            sCategoria = sCargo
+            iPorcentaje = fPorcentajeTotal
+
+            lEstructura = [sTitulo, sCategoria, iTotal, iPorcentaje]
+            mostrarEstructura(lEstructura)
+
+            for partido in dRegionPartido[clave]:
+                if partido!="":
+                    sNomPartido = partido + ":"
+                    sNroLista = dPartidos[partido][1]
+                    iTotalPartido=dRegionPartido[clave][partido][0]
+                    fPorcentajePartido=dRegionPartido[clave][partido][2]
+                    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido]
+                    mostrarDatosGrilla(lGrilla)
+                    
+            sVotosPositivos = "VOTOS POSITIVOS:"
+            mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
+            
+            sVotoBlancos = "VOTOS EN BLANCO:"
+            mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+
+            sTotales = "TOTAL:"
+            mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
+            print()
+
+def mostrarDiputados (dRegionPartido, dVotosTotales, sCargo):
+    iNumBancasBuenosAires = 35
+    iNumBancasCABA = 12
+    iNumBancasSantaFe = 10
+    iNumBancasCordoba = 9
+    iNumBancasMendozaTucuman = 5
+    iNumBancasCorrienteEntreRiosMisionesSaltaSantiagoDelEstero = 4
+    iNumBancasChacoChubutFormosaJujuyLaRiojaRioNegroSanJuanTierraDelFuego = 3
+    iNumBancasCatamarcaLaPampaNeuquenSantacruzSanLuis = 2
+    
+    for clave in dRegionPartido:
+
+        dRegiones = Escrutinio.obtenerRegion()
+        dPartidos = Escrutinio.obtenerPartido()
+        
+        if '' in dRegionPartido[clave]:
+            iTotal = len(dRegionPartido[clave])-1
+        else:
+            iTotal = len(dRegionPartido[clave])
+        
+        if iTotal != 0:
+            iVotoPositivo=dVotosTotales[clave][0][0]
+            fPorcentajePositivo=dVotosTotales[clave][0][1]
+            iVotoBlanco=dVotosTotales[clave][0][2]
+            fPorcentajeBlanco=dVotosTotales[clave][0][3]
+            iTotalRegion=dVotosTotales[clave][0][4]
+            fPorcentajeTotal=dVotosTotales[clave][0][5]
+            sNomRegion=dRegiones[clave][0]
+            sTitulo = sNomRegion
+            sCategoria = sCargo
+            iPorcentaje = fPorcentajeTotal
+
+            lEstructura = [sTitulo, sCategoria, iTotal, iPorcentaje, True]
+            mostrarEstructura(lEstructura)
+
+
+            if sNomRegion == "Buenos Aires":
+                iNumBancas = iNumBancasBuenosAires
+            elif sNomRegion == "Ciudad Autonoma de Buenos Aires":
+                iNumBancas = iNumBancasCABA
+            elif sNomRegion == "Santa Fe":
+                iNumBancas = iNumBancasSantaFe
+            elif sNomRegion == "Córdoba":
+                iNumBancas = iNumBancasCordoba
+            elif sNomRegion == "Mendoza" or sNomRegion == "Tucumán":
+                iNumBancas = iNumBancasMendozaTucuman
+            elif sNomRegion == "Corrientes" or sNomRegion == "Entre Ríos" or sNomRegion == "Misiones" or sNomRegion == "Salta" or sNomRegion == "Santiago del Estero":
+                iNumBancas = iNumBancasCorrienteEntreRiosMisionesSaltaSantiagoDelEstero
+            elif sNomRegion == "Chaco" or sNomRegion == "Chubut" or sNomRegion == "Formosa" or sNomRegion == "Jujuy" or sNomRegion == "La Rioja" or sNomRegion == "Río Negro" or sNomRegion == "San Juan" or sNomRegion == "San Juan":
+                iNumBancas = iNumBancasChacoChubutFormosaJujuyLaRiojaRioNegroSanJuanTierraDelFuego
+            elif sNomRegion == "Catamarca" or sNomRegion == "La Pampa" or sNomRegion == "Neuquén" or sNomRegion == "Santa Cruz" or sNomRegion == "San Luis":
+                iNumBancas = iNumBancasCatamarcaLaPampaNeuquenSantacruzSanLuis
+            
+            if '' in dRegionPartido[clave]:
+                del dRegionPartido[clave]['']
+            
+            dBancasDiputados = Escrutinio.sistemaDhondt(dRegionPartido[clave], iNumBancas)
+
+            for partido in dBancasDiputados:
+                if dBancasDiputados[partido][3] != 0:
+                    sNomPartido = partido + ":"
+                    sNroLista = dPartidos[partido][1]
+                    iTotalPartido=dBancasDiputados[partido][0]
+                    fPorcentajePartido=dBancasDiputados[partido][2]
+                    bancasGanadas = dBancasDiputados[partido][3]
+                    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido, bancasGanadas]
+                    mostrarDatosGrilla(lGrilla)
+
+            sVotosPositivos = "VOTOS POSITIVOS:"
+            mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
+            
+            sVotoBlancos = "VOTOS EN BLANCO:"
+            mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+
+            sTotales = "TOTAL:"
+            mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
+            print()

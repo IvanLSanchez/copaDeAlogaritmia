@@ -27,15 +27,31 @@ def validarValor(dDiccionario, valorClave, valor):
                 bExiste = True
     return bExiste
 
-def generarDiccionario(lLista, iPosClave=0, iPosValor=1):
+def generarDiccionario(lLista):
     """Crea un diccionario a partir de una lista
     con clave con iPosClave y valor por defecto en iPosValor"""
     dDiccionario = {}
+    iPosClave = 1
+    iPosValor1 = 0
+    iPosValor2 = 2
+    
     for lDatos in lLista:
+        iLongitud = len(lDatos)
         clave = lDatos[iPosClave]
-        if not esClave(dDiccionario, clave):
-            dDiccionario[clave] = []
-            dDiccionario[clave].append(lDatos[iPosValor])
-        else:
-            dDiccionario[clave].append(lDatos[iPosValor])
+        dDiccionario[clave] = []
+        dDiccionario[clave].append(lDatos[iPosValor1])
+        if iLongitud > 2:
+            dDiccionario[clave].append(lDatos[iPosValor2])
     return dDiccionario
+
+def ordenarDiccionarioMatriz(dDiccionario):
+    """Ordena diccionarios con matrices internas,
+    tomando la posición 1 de las filas y su contenido de posición 0 como referencia de ordenamiento"""
+    #Lista de tuplas en formato clave, valor
+    #[(<clave1>, [<v1.1>, <v1.2>, etc]), (<clave2>, [<v2.1>, <v2.2>, etc])]
+    lLista = list(dDiccionario.items())
+    #Ordena los items de manera descendente
+    lLista.sort(key=lambda x:x[1][0], reverse=True)
+    #Se transforma en diccionario
+    dNuevo = dict(lLista)
+    return dNuevo
