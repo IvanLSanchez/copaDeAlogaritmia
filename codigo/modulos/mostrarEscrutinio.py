@@ -40,3 +40,93 @@ def mostrarEscrutinio(cantPartidos):
 
 
 mostrarEscrutinio(3)
+
+
+
+def dhont(nSeats,votes,verbose=False):
+    """
+    nSeats is the number of seats
+    votes is a dictionary with the key:value {'party':votes}
+    verbose is an option to print designation info
+    """
+    t_votes=votes.copy()
+    seats={}
+    for key in votes: seats[key]=0
+    while sum(seats.values()) < nSeats:
+        max_v= max(t_votes.values())
+        next_seat=list(t_votes.keys())[list(t_votes.values()).index(max_v)]
+        if next_seat in seats:
+            seats[next_seat]+=1
+        else:
+            seats[next_seat]=1
+
+        if verbose:
+            print("{} Escaño: {}".format(sum(seats.values()),next_seat))
+            for key in t_votes:
+                print("\t{} [{}]: {:.1f}".format(key,seats[key],t_votes[key]))
+            print("\b")
+        t_votes[next_seat]=votes[next_seat]/(seats[next_seat]+1)
+    return seats
+
+
+
+nSeats = 8
+votes = {'a':168,'b':104,'c':72,'d':64,'e':40}
+seats=dhont(nSeats,votes,verbose=True)
+"""1 Escaño: a
+    a [1]: 168.0
+    b [0]: 104.0
+    c [0]: 72.0
+    d [0]: 64.0
+    e [0]: 40.0"""
+"""
+2 Escaño: b
+    a [1]: 84.0
+    b [1]: 104.0
+    c [0]: 72.0
+    d [0]: 64.0
+    e [0]: 40.0
+
+3 Escaño: a
+    a [2]: 84.0
+    b [1]: 52.0
+    c [0]: 72.0
+    d [0]: 64.0
+    e [0]: 40.0
+
+4 Escaño: c
+    a [2]: 56.0
+    b [1]: 52.0
+    c [1]: 72.0
+    d [0]: 64.0
+    e [0]: 40.0
+
+5 Escaño: d
+    a [2]: 56.0
+    b [1]: 52.0
+    c [1]: 36.0
+    d [1]: 64.0
+    e [0]: 40.0
+
+6 Escaño: a
+    a [3]: 56.0
+    b [1]: 52.0
+    c [1]: 36.0
+    d [1]: 32.0
+    e [0]: 40.0
+
+7 Escaño: b
+    a [3]: 42.0
+    b [2]: 52.0
+    c [1]: 36.0
+    d [1]: 32.0
+    e [0]: 40.0
+
+8 Escaño: a
+    a [4]: 42.0
+    b [2]: 34.7
+    c [1]: 36.0
+    d [1]: 32.0
+    e [0]: 40.0
+"""
+{'a': 4, 'b': 2, 'c': 1, 'd': 1, 'e': 0}

@@ -133,15 +133,16 @@ def contarVotosPartido(dVotosRegion):
         for lVoto in dVotosRegion[clave]:
             #En posición 3 vienen los partidos políticos
             sClave = lVoto[3]
-            iTotalRegion+=1
+            if sClave!="":
+                iTotalRegion+=1
             if not Diccionario.esClave(dVotoPartido, sClave):
                 dVotoPartido[sClave] = []
                 #Hay un voto
-                dVotoPartido[sClave].append(1)           
+                dVotoPartido[sClave].append(1)
             else:
                 #Se suma el voto
                 dVotoPartido[sClave][0]+=1
-        #Agregado del total y el porcentaje    
+        #Agregado del total y el porcentaje
         for partido in dVotoPartido:
             iVotoPartido = dVotoPartido[partido][0]
             dVotoPartido[partido].append(iTotalRegion)
@@ -246,3 +247,36 @@ def calcularTotalesSenadores(dSenadores):
     lVotos = lPartido[0:2]
     lVotos.append(tTotales)
     return lVotos
+
+def sistemaDhondt(dPartidos, iCantBancas):
+
+    dBancas = {}
+    
+    dPartidosCopia=dPartidos.copy()
+    lBancasTotales = list(dBancas.values())
+
+    for partido in dPartidosCopia: 
+        dBancas[partido]=0
+
+    for partido in dPartidosCopia:
+        dPartidosCopia[partido] = dPartidosCopia[partido][0]
+    
+    for iBanca in range (1,iCantBancas+1,1):
+        lPartido = list(dPartidosCopia.keys())
+        lVotosPartidos= list(dPartidosCopia.values())
+        maxVotos = max(lVotosPartidos)
+        sPartido = lPartido[lVotosPartidos.index(maxVotos)]
+        
+        if sPartido in dBancas:
+            dBancas[sPartido]+=1
+        else:
+            dBancas[sPartido]=1
+        
+        dPartidosCopia[sPartido]=dPartidos[sPartido][0]/(iBanca+1)
+        lBancasTotales = list(dBancas.values())
+
+    for partido in dPartidos:
+        dPartidos[partido].append(dBancas[partido])
+        
+    dBancas = dPartidos
+    return dBancas
