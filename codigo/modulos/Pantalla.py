@@ -94,7 +94,7 @@ def menuEscrutinio():
 
     try:
         sOpcion=input(sIngreso)
-        while sOpcion=="" or sOpcion.isalpha() or not sOpcion.isdigit() or int(sOpcion) > 4:
+        while sOpcion=="" or sOpcion.isalpha() or not sOpcion.isdigit() or int(sOpcion) > 4 or int(sOpcion) < 1:
             print("Valor NO válido\n")
             sOpcion=input(sIngreso)
     except ValueError:
@@ -312,7 +312,6 @@ def mostrarDiputados (dRegionPartido, dVotosTotales, sCargo):
             sCategoria = sCargo
             iPorcentaje = fPorcentajeTotal
 
-            print(sNomRegion)
             lEstructura = [sTitulo, sCategoria, iTotal, iPorcentaje, True]
             mostrarEstructura(lEstructura)
 

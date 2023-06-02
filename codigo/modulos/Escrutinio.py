@@ -233,7 +233,7 @@ def calcularTotalesSenadores(dSenadores):
     if lClaveBlanca!=None:
         iVotoBlanco=lClaveBlanca[0]
         fPorcentajeBlanco=lClaveBlanca[2]
-    sClave=list(dSenadores.partidos())[0]
+    sClave=list(dSenadores.keys())[0]
     iTotalNacional=dSenadores[sClave][1]
     fPorcentajeTotal=100.0
     lPartido=[]
