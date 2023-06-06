@@ -1,12 +1,12 @@
-from modulos import Escrutinio
-from modulos import Diccionario
+import Escrutinio
+import Diccionario
 
 def leer(sDirectorio):
     """Devuelve en una la lista las líneas encontradas en el archivo sDirectorio"""
     lDatos = [] #guarda datos de linea
     lRegistro = [] #guarda listas
     try: 
-        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
+        oArchivo = open(sDirectorio, "rt", encoding="UTF-8")
         sLinea = oArchivo.readline()
         while sLinea:
             sListado = sLinea.rstrip("\n")
@@ -26,7 +26,7 @@ def leer(sDirectorio):
 def guardar(sDirectorio, lRegistro):
     """Guarda los valores de la lista lRegistro en el archivo sDirectorio"""
     try:
-        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "wt")
+        oArchivo = open(sDirectorio, "wt")
         for datos in lRegistro:
             sLinea = ";".join(datos)
             sLinea = sLinea + "\n"
@@ -45,7 +45,7 @@ def leerVotos(sDirectorio, sCargo):
     lVoto = [] #guarda datos de linea
     lVotos = [] #guarda listas
     try: 
-        oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
+        oArchivo = open(sDirectorio, "rt", encoding="UTF-8")
         
         for sLinea in oArchivo:
             sDatos = sLinea.rstrip("\n")
@@ -67,7 +67,7 @@ def guardarEleccion(dRegistroElectoral):
     try:
         for sNomArchivo in dRegistroElectoral:
             lRegistro = dRegistroElectoral[sNomArchivo]
-            oArchivo = open(f"codigo/basesDeDatos/{sNomArchivo}", "wt", encoding="UTF-8")
+            oArchivo = open(sNomArchivo, "wt", encoding="UTF-8")
             
             for lDato in lRegistro:
                 sLinea = ";".join(lDato)
@@ -122,7 +122,7 @@ def leerVotosPresidencial(dPartidos):
     for sDirectorio in lArchivos:
 
         try:
-                oArchivo = open(f"codigo/basesDeDatos/{sDirectorio}", "rt", encoding="UTF-8")
+                oArchivo = open(sDirectorio, "rt", encoding="UTF-8")
                 
                 for sLinea in oArchivo:
                     sDatos = sLinea.rstrip("\n")
