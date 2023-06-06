@@ -1,4 +1,5 @@
 from modulos import Escrutinio
+from modulos import Diccionario
 
 ICANTIDADCARACTERES=70
 ICANTIDADCARACTERESENTER = 100
@@ -180,6 +181,33 @@ def mostrarEstructura(lEstructura):
     except:
         print(sColor2 + "{:^26} {:^32} {:^25} {:^25}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
         print(sSeparador)
+
+def mostrarEstructuraBalotaje(lEstructura):
+    """Visualización de la estructura cabecera y detalle de la grilla"""
+    iRelleno = 111
+    
+    sColor1 = "\33[1;37;41m"
+    sColor2 = "\33[1;30;47m"
+    sColor3 = "\33[0;30;47m"
+    sColor6 = "\33[0m"
+
+    sEnter = sColor3 + " ".center(iRelleno," ") + sColor6
+    sSeparador = sColor3 + "_".center(iRelleno,"_") + sColor6
+
+    print(sColor1 + lEstructura[0].center(iRelleno) + sColor6)
+
+    print(sColor2 + "ELECCIONES GENERALES 2023".center(iRelleno) + sColor6)
+
+    print(sEnter)
+
+    print(sColor2 + ("Electores habilitados: {}".format(lEstructura[1])).center(iRelleno) + sColor6)
+    print(sColor2 + ("Porcentaje de votantes: {}".format(lEstructura[2])).center(iRelleno) + sColor6)
+
+    print(sSeparador)
+    print(sEnter)
+
+    print(sColor2 + "{:^26} {:^32} {:^25} {:^25}".format("Nº LISTA", "PARTIDO POLÍTICO", "VOTO", "%") + sColor6)
+    print(sSeparador)
     
 def mostrarSenadores(dSenadores):
     """Visualización de los senadores"""
@@ -280,6 +308,68 @@ def mostrarPresidentesGobernadores(dRegionPartido, dVotosTotales, sCargo):
             mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
             print()
 
+def mostrarPresidentesBalotaje(dRegionPartido, dVotosTotales, sCargo): ## Modificacion
+        
+    dRegiones = Escrutinio.obtenerRegion()
+    dPartidos = Escrutinio.obtenerPartido()
+    
+    dRegiones = dict(sorted(dRegiones.items(), key=lambda item:item[1], reverse=False))
+    
+    for clave in dRegionPartido:
+        
+        if '' in dRegionPartido[clave]:
+            iTotal = len(dRegionPartido[clave])-1
+        else:
+            iTotal = len(dRegionPartido[clave])
+        
+        if iTotal != 0:
+            iVotoPositivo=dVotosTotales[clave][0][0]
+            fPorcentajePositivo=dVotosTotales[clave][0][1]
+            iVotoBlanco=dVotosTotales[clave][0][2]
+            fPorcentajeBlanco=dVotosTotales[clave][0][3]
+            iTotalRegion=dVotosTotales[clave][0][4]
+            fPorcentajeTotal=dVotosTotales[clave][0][5]
+            sNomRegion=dRegiones[clave][0]
+            sTitulo = sNomRegion
+            sCategoria = sCargo
+            iPorcentaje = fPorcentajeTotal
+
+            lEstructura = [sTitulo, iTotal, iPorcentaje]
+            mostrarEstructuraBalotaje(lEstructura)
+            
+            dVotoRegion = {}
+            for partido in dRegionPartido[clave]:
+                
+                if Diccionario.esClave(dVotoRegion, partido):
+                    dVotoRegion[partido] += dRegionPartido[clave][partido][0]
+                else:
+                    dVotoRegion[partido] = dRegionPartido[clave][partido][0]
+            
+            dVotoRegion=Diccionario.ordenarDiccionario(dVotoRegion)
+            
+
+            for partido in dRegionPartido[clave]:
+                if partido!="":
+                    sNomPartido = partido + ":"
+                    sNroLista = dPartidos[partido][1]
+                    iTotalPartido=dRegionPartido[clave][partido][0]
+                    fPorcentajePartido=dRegionPartido[clave][partido][2]
+                    lGrilla = [sNroLista, sNomPartido, iTotalPartido, fPorcentajePartido]
+                    mostrarDatosGrilla(lGrilla)
+                    
+            sVotosPositivos = "VOTOS POSITIVOS:"
+            mostrarPieGrilla(sVotosPositivos, iVotoPositivo, fPorcentajePositivo)
+            
+            sVotoBlancos = "VOTOS EN BLANCO:"
+            mostrarPieGrilla(sVotoBlancos, iVotoBlanco, fPorcentajeBlanco)
+
+            sTotales = "TOTAL:"
+            mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
+            
+            print()
+            
+            
+
 def mostrarDiputados (dRegionPartido, dVotosTotales, sCargo):
     iNumBancasBuenosAires = 35
     iNumBancasCABA = 12
@@ -357,3 +447,29 @@ def mostrarDiputados (dRegionPartido, dVotosTotales, sCargo):
             sTotales = "TOTAL:"
             mostrarPieGrilla(sTotales, iTotalRegion, fPorcentajeTotal)
             print()
+
+def mostrarResultadosBalotaje(sCargo, dRegionPartidos, dTotales): #Modificacion
+    dPartidos = Escrutinio.obtenerPartido()
+    
+    dVotos = Escrutinio.calcularTotalesSenadores(dTotales)
+    
+    sTitulo = "RESULTADOS NACIONALES BALOTAJE PRESIDENTE"
+    
+    iRelleno = 50
+
+    sColor1 = "\33[1;37;41m"
+    sColor2 = "\33[1;30;47m"
+    sColor3 = "\33[0;30;47m"
+    sColor6 = "\33[0m"
+
+    sEnter = sColor3 + " ".center(iRelleno," ") + sColor6
+
+    print(sColor1 + sTitulo.center(iRelleno) + sColor6)
+    print(sEnter)
+    
+    for i in range (1):
+        print(sColor2 + ("Partido gamador: {}".format(dVotos[0][0]).center(iRelleno) + sColor6))
+    
+    print(sEnter)
+    print(sColor2 + ("Porcentaje total pais: {:.2f}%".format(dVotos[0][3])).center(iRelleno) + sColor6)
+    print(sEnter)

@@ -44,6 +44,33 @@ def generarDiccionario(lLista):
             dDiccionario[clave].append(lDatos[iPosValor2])
     return dDiccionario
 
+def generarDicCodLista(lLista):
+    """Crea un diccionario a partir de una lista
+    con clave con iPosClave y valor por defecto en iPosValor"""
+    dDiccionario = {}
+    iPosClave = 2
+    iPosValor1 = 1
+    
+    for lDatos in lLista:
+        iLongitud = len(lDatos)
+        clave = lDatos[iPosClave]
+        dDiccionario[clave] = []
+        dDiccionario[clave].append(lDatos[iPosValor1])
+    return dDiccionario
+
+def ordenarDiccionario(dDiccionario):
+    """Ordena diccionarios con matrices internas,
+    tomando la posición 1 de las filas y su contenido de posición 0 como referencia de ordenamiento"""
+    #Lista de tuplas en formato clave, valor
+    #[(<clave1>, [<v1.1>, <v1.2>, etc]), (<clave2>, [<v2.1>, <v2.2>, etc])]
+    lLista = list(dDiccionario.items())
+    #Ordena los items de manera descendente
+    lLista.sort(key=lambda x:x[1], reverse=True)
+    #Se transforma en diccionario
+    dNuevo = dict(lLista)
+    return dNuevo
+
+
 def ordenarDiccionarioMatriz(dDiccionario):
     """Ordena diccionarios con matrices internas,
     tomando la posición 1 de las filas y su contenido de posición 0 como referencia de ordenamiento"""
@@ -55,3 +82,6 @@ def ordenarDiccionarioMatriz(dDiccionario):
     #Se transforma en diccionario
     dNuevo = dict(lLista)
     return dNuevo
+
+l = {'': 53, 'LBD': 53, 'PPP': 29, 'FDT': 34, 'POI': 41, 'JXC': 31}
+s = ordenarDiccionario(l)

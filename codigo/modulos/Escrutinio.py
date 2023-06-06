@@ -1,19 +1,24 @@
-from modulos import Diccionario
 from modulos import Archivo
+from modulos import Diccionario
 import random
 
-def asignarVoto(dPadron):
+def asignarVoto(dPadron, lMayoresFuerzas):
     """Asigna un voto al azar para cada votante"""
-    sArchBoletas = "boletas.txt"
-    lPartidosMemoria = Archivo.leer(sArchBoletas)
+    
+    lPartidoHabilitado = []
+    for lPartido in lMayoresFuerzas:
+        lPartidoHabilitado.append(lPartido[0])
     for iDNI in dPadron:
         lVotoDNI = []
-        iMax = len(lPartidosMemoria)-1
         for lDato in dPadron[iDNI]:
             iVota = random.randint(1, 10)
             if iVota > 1:
-                iPosicion = random.randint(0, iMax)
-                sVotoPartido = lPartidosMemoria[iPosicion][1]
+                iPosicion = random.randint(1, 10)
+                if iPosicion > 4:
+                    iPosicion = 0
+                else:
+                    iPosicion = 1
+                sVotoPartido = lPartidoHabilitado[iPosicion]
             else:
                 sVotoPartido = ""
             lDato.append(sVotoPartido)
@@ -27,21 +32,9 @@ def asignarCargo(dPadron):
         iLongitud=len(lMatriz)
         for lDato in lMatriz:
             bRepetir=True
-            iCargo = random.randint(1, iMax)
+            #Presidente
+            iCargo = 1
             sCargo = str(iCargo)
-            while bRepetir:
-                bExiste=False
-                #Posición 2 es donde está el cargo
-                for iPos in range(iLongitud):
-                    lVotos=lMatriz[iPos]
-                    if len(lVotos)==3:
-                        if sCargo==lVotos[2]:
-                            bExiste=True
-                if bExiste:
-                    iCargo = random.randint(1, iMax)
-                    sCargo = str(iCargo)
-                else:
-                    bRepetir=False
             lDato.append(sCargo)
 
 def generarRegion(dPadron, lRegionMemoria):
@@ -280,3 +273,29 @@ def sistemaDhondt(dPartidos, iCantBancas):
         
     dBancas = dPartidos
     return dBancas
+
+def calcularVotosTotales(dVotoNacional):
+    iVotosTotales = 0
+    for clave in dVotoNacional:
+        iVotosTotales += dVotoNacional[clave]
+    return iVotosTotales
+
+def calcularMayoresFuerzas(dVotoNacional):
+    lVotoNacional=list(dVotoNacional.items())[0:2]
+    bSumar = False
+    lVotoNacionalAux = []
+    for tValor in lVotoNacional:
+        lDato = [tValor[0], tValor[1]]
+        lVotoNacionalAux.append(lDato)
+    lVotoNacional = lVotoNacionalAux[:]
+
+    for lpartido in lVotoNacional:
+        if lpartido[0]=="":
+            bSumar=True
+            bIndiceBorrar = lVotoNacional.index(lpartido)
+    if bSumar:
+        lVotoNacional.pop(bIndiceBorrar)
+        lTerceraFuerza=list(list(dVotoNacional.items())[2:3][0])
+        lVotoNacional.append(lTerceraFuerza)
+        
+    return lVotoNacional
