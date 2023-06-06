@@ -12,7 +12,7 @@ Los cargos a elegir serán presidente y vicepresidente (código 1), diputado (2)
 
 Al finalizar la carga se mostrarán los siguientes listados por pantalla:
 
-![](img/Captura.PNG)
+![](imagenes/Captura.PNG)
 
 El material a entregar consistirá en el programa fuente escrito en Python y los archivos de datos generados a partir de su utilización.
 

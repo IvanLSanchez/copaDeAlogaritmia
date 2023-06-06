@@ -15,3 +15,6 @@ veinticuatro senadores.
 
 ## Codigo 💻
 - [Archivos 📁](codigo)
+
+# Informacion del grupo 👥
+- [Meligion 🙏🏻](presentacion/presentacion.md)
