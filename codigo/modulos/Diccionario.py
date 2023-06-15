@@ -82,6 +82,3 @@ def ordenarDiccionarioMatriz(dDiccionario):
     #Se transforma en diccionario
     dNuevo = dict(lLista)
     return dNuevo
-
-l = {'': 53, 'LBD': 53, 'PPP': 29, 'FDT': 34, 'POI': 41, 'JXC': 31}
-s = ordenarDiccionario(l)
